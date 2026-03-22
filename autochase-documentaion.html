@@ -16,6 +16,7 @@
     th { background: #f4f5f7; }
     code { background: #f4f5f7; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
     a { color: #0052cc; }
+    .doc-image-placeholder { display: block; margin: 12px 0; padding: 24px; background: #f4f5f7; border: 2px dashed #dfe1e6; border-radius: 8px; color: #6b778c; font-size: 0.9em; font-style: italic; }
   </style>
 </head>
 <body>
@@ -31,13 +32,35 @@
 
   <h2>Setup Steps</h2>
   <h3>1. Create Departments & Teams (optional)</h3>
-  <p>In the admin page, create departments and teams. These help organize projects and can have default SLAs.</p>
+  <p>In the admin page, create departments and teams. These define your organizational structure for escalation hierarchy.</p>
 
   <h3>2. Add Projects</h3>
   <p>Add the Jira project keys you want to track (e.g. <code>PROJ</code>, <code>SUPPORT</code>). You can set a project owner email for escalation fallback.</p>
 
-  <h3>3. Upload Org Hierarchy (optional)</h3>
-  <p>Upload a TSV or CSV with columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>. Optionally include <code>jira_account_id</code>. This defines who gets escalated when an SLA is at risk (assignee → manager → director).</p>
+  <h3>3. Upload Team / Organisation Hierarchy (optional)</h3>
+  <p>Upload your organisation structure so AutoChase can escalate to the right managers when SLAs are at risk. Go to the <strong>Escalation hierarchy</strong> tab in the sidebar.</p>
+
+  <p><strong>Step 1: Download the template</strong></p>
+  <p>Click <strong>Download template</strong> to get a CSV/TSV file in the correct format. Fill in the required columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>. Optionally add <code>jira_account_id</code> if you already have it.</p>
+  <div class="doc-image-placeholder">📷 Image: Escalation hierarchy tab – sidebar with "Escalation hierarchy" selected, showing Download template and Add employee buttons</div>
+
+  <p><strong>Step 2: Import the data</strong></p>
+  <p>You can either:</p>
+  <ul>
+    <li><strong>Paste</strong> your CSV/TSV data into the text area, or</li>
+    <li>Click <strong>Import (choose file)</strong> to upload a file (CSV, TSV, or Excel .xlsx/.xls).</li>
+  </ul>
+  <p>Supported formats: CSV, TSV, Excel (.xlsx/.xls). <em>Note: Apple Numbers files must be exported to Excel or CSV first.</em></p>
+  <p>After import, the data appears in the table below. During upload you will see progress messages such as "Importing..." and "Resolving Jira account IDs...".</p>
+  <div class="doc-image-placeholder">📷 Image: Paste area (CSV/TSV text box) and Import (choose file) button</div>
+
+  <p><strong>Step 3: Resolve Jira IDs</strong></p>
+  <p>After uploading, click <strong>Resolve Jira IDs</strong>. This fetches Jira account IDs for your employees based on their email addresses (requires read:jira-user permission). This links hierarchy rows to Jira users so escalations and watchers work correctly.</p>
+  <div class="doc-image-placeholder">📷 Image: Resolve Jira IDs button with "Best-effort lookup of Jira accountIds from email" helper text</div>
+
+  <p><strong>Step 4: Verify</strong></p>
+  <p>Check the table to confirm your hierarchy data and Jira accountIds are populated. You can also add or edit employees manually using <strong>Add employee</strong>.</p>
+  <div class="doc-image-placeholder">📷 Image: Hierarchy table with Employee ID, Name, Email, Jira accountId, Reports to, and Actions columns</div>
 
   <h3>4. Create SLAs</h3>
   <p>Define SLAs with response and resolution times. Match by project key (or <code>*</code> for all), issue type, and priority. Set warning % for when status becomes "at risk."</p>
