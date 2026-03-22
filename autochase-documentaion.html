@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoChase Documentation</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; line-height: 1.6; color: #172b4d; }
+    h1 { font-size: 1.5rem; margin-top: 0; }
+    h2 { font-size: 1.2rem; margin-top: 1.5em; border-bottom: 1px solid #dfe1e6; padding-bottom: 0.25em; }
+    h3 { font-size: 1rem; margin-top: 1em; }
+    p { margin: 0.5em 0; }
+    ul, ol { margin: 0.5em 0; padding-left: 1.5em; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid #dfe1e6; padding: 8px 12px; text-align: left; }
+    th { background: #f4f5f7; }
+    code { background: #f4f5f7; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    a { color: #0052cc; }
+  </style>
+</head>
+<body>
+  <h1>AutoChase Documentation</h1>
+  <p>AutoChase tracks SLAs for Jira issues, sends reminders when at risk, and escalates to managers via your org hierarchy.</p>
+
+  <h2>Getting Started</h2>
+  <ol>
+    <li>Install AutoChase from the Atlassian Marketplace.</li>
+    <li>Open <strong>Jira → Apps → AutoChase</strong> (or Manage apps → AutoChase).</li>
+    <li>Add projects, create SLAs, and optionally upload your org hierarchy.</li>
+  </ol>
+
+  <h2>Setup Steps</h2>
+  <h3>1. Create Departments & Teams (optional)</h3>
+  <p>In the admin page, create departments and teams. These help organize projects and can have default SLAs.</p>
+
+  <h3>2. Add Projects</h3>
+  <p>Add the Jira project keys you want to track (e.g. <code>PROJ</code>, <code>SUPPORT</code>). You can set a project owner email for escalation fallback.</p>
+
+  <h3>3. Upload Org Hierarchy (optional)</h3>
+  <p>Upload a TSV or CSV with columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>. Optionally include <code>jira_account_id</code>. This defines who gets escalated when an SLA is at risk (assignee → manager → director).</p>
+
+  <h3>4. Create SLAs</h3>
+  <p>Define SLAs with response and resolution times. Match by project key (or <code>*</code> for all), issue type, and priority. Set warning % for when status becomes "at risk."</p>
+
+  <h3>5. Configure Escalation Rules</h3>
+  <p>Per SLA, add rules: trigger at X% of response/resolution time or after X minutes, level, auto-reassign to manager, add comment.</p>
+
+  <h2>How It Works</h2>
+  <ul>
+    <li><strong>Auto-tracking:</strong> New issues in enabled projects are tracked from creation.</li>
+    <li><strong>SLA assignment:</strong> Matching SLA is assigned based on project, issue type, and priority.</li>
+    <li><strong>Status:</strong> on_track → at_risk (at warning %) → breach (at resolution time).</li>
+    <li><strong>Reminders:</strong> Acknowledgment and progress reminders when SLAs approach breach.</li>
+    <li><strong>Escalation:</strong> Every 5 minutes, escalation rules run—reassign to manager, add comment, notify via hierarchy.</li>
+    <li><strong>Resolution:</strong> When an issue is moved to Done/Resolved, tracking stops.</li>
+  </ul>
+
+  <h2>Issue Panel</h2>
+  <p>On each tracked issue, open the right-hand panel <strong>SLA Status</strong> to see status, escalation level, time remaining, acknowledgment state, and assign an SLA manually if needed.</p>
+
+  <h2>Troubleshooting</h2>
+  <table>
+    <tr><th>Problem</th><th>Solution</th></tr>
+    <tr><td>Issue not tracked</td><td>Add the project in the admin. Create a new issue (or update an existing one) after adding.</td></tr>
+    <tr><td>No SLA assigned</td><td>Create an SLA matching the project key (or <code>*</code>), issue type, and priority.</td></tr>
+    <tr><td>Panel shows "not tracked"</td><td>Only issues in projects you added are tracked. Ensure the issue was created after the app was installed.</td></tr>
+    <tr><td>Escalation not working</td><td>Check hierarchy upload and escalation rules. Ensure manager has a Jira account linked (by email or jira_account_id).</td></tr>
+  </table>
+
+  <h2>Support</h2>
+  <p>For questions or issues, contact <a href="mailto:info@opusleaf.com">info@opusleaf.com</a> or open an issue on our support channel.</p>
+
+  <p><em>AutoChase runs on Atlassian Forge. Data stays in your Jira site—no external servers.</em></p>
+</body>
+</html>
