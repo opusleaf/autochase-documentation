@@ -137,138 +137,172 @@
     <li>Create departments first, then map teams to departments.</li>
   </ul>
 
-  <h3>4. Create SLA</h3>
-  <p>Use the <strong>SLA rules</strong> tab to define response/resolution targets, reminders, and leadership visibility flow.</p>
-  
-  <h4>Before you start</h4>
-  <ul>
-    <li>Create at least one SLA in this section.</li>
-    <li>You can choose <strong>Single SLA</strong> or <strong>Priority-based SLA (P1–P5)</strong>.</li>
-    <li>All SLAs are assigned through project mapping in the <strong>Projects</strong> tab.</li>
-  </ul>
-  
-  <hr />
-  
-  <h3>4A. Single SLA (same times for all priorities)</h3>
-  
-  <h4>Step 1: SLA Timing</h4>
-  <ul>
-    <li>Click <strong>Create SLA</strong>.</li>
-    <li>Enter <code>SLA name</code>.</li>
-    <li>Select <strong>Single SLA</strong>.</li>
-    <li>(Optional) Add <code>Issue type</code> and <code>Priority filter</code> if you want narrower matching.</li>
-    <li>Set:
-      <ul>
-        <li><strong>Response time</strong> (required)</li>
-        <li><strong>Resolution time</strong> (required)</li>
-        <li><strong>Warning threshold %</strong> (recommended default: 80)</li>
-      </ul>
-    </li>
-    <li>Click <strong>Next</strong>.</li>
-  </ul>
-  
-  <h4>Step 2: Acknowledgment Reminders</h4>
-  <ul>
-    <li>Set one or more reminder percentages (e.g., 25, 50, 75).</li>
-    <li>These percentages are calculated against <strong>response time</strong>.</li>
-    <li>Use <strong>Add reminder</strong> / <strong>Remove</strong> to manage up to 3 reminders.</li>
-    <li>Update message template if needed.</li>
-    <li>Click <strong>Next</strong>.</li>
-  </ul>
-  
-  <h4>Step 3: Progress Reminders</h4>
-  <ul>
-    <li>Set reminder percentages for progress nudges (e.g., 50, 75).</li>
-    <li>These percentages are calculated against <strong>resolution time</strong>.</li>
-    <li>Set <strong>Progress check interval (minutes)</strong>.</li>
-    <li>Update progress reminder message template if needed.</li>
-    <li>Click <strong>Next</strong>.</li>
-  </ul>
-  
-  <h4>Step 4: Leadership Visibility Levels</h4>
-  <ul>
-    <li>Choose number of levels (e.g., 1–6).</li>
-    <li>For each level:
-      <ul>
-        <li>Select trigger base: <strong>Response Time</strong> or <strong>Resolution Time</strong></li>
-        <li>Set trigger percentage (1–99)</li>
-        <li>Review computed time hint shown below (for clarity)</li>
-      </ul>
-    </li>
-    <li>Optionally edit comment template per level.</li>
-    <li>Click <strong>Next</strong>.</li>
-  </ul>
-  
-  <h4>Step 5: Review &amp; Submit</h4>
-  <ul>
-    <li>Review:
-      <ul>
-        <li>Acknowledgment reminders</li>
-        <li>Progress reminders</li>
-        <li>Leadership visibility rules</li>
-        <li>Combined alert trigger order</li>
-      </ul>
-    </li>
-    <li>Click <strong>Submit</strong> (or <strong>Create SLA</strong> in footer).</li>
-  </ul>
-  
-  <p><em>Outcome:</em> SLA is created and available in the SLA list. You can assign it as project default from the <strong>Projects</strong> tab.</p>
-  
-  <hr />
-  
-  <h3>4B. Priority-based SLA (P1–P5)</h3>
-  
-  <h4>Step 1: SLA Timing (Priority Mode)</h4>
-  <ul>
-    <li>Click <strong>Create SLA</strong>.</li>
-    <li>Enter <code>SLA name</code>.</li>
-    <li>Select <strong>Priority-based SLA (P1–P5)</strong>.</li>
-    <li>Fill response and resolution times per priority row (P1 to P5).</li>
-    <li><strong>Rule:</strong> At least one priority must have both response and resolution time.</li>
-    <li>Click <strong>Next</strong>.</li>
-  </ul>
-  
-  <h4>How priority mapping works</h4>
-  <ul>
-    <li>Jira priority names map to P1–P5 internally (for example: Highest/Critical → P1, High → P2, Medium → P3, Low → P4, Lowest → P5).</li>
-    <li>If a row is left blank, it is not explicitly overridden by that priority row.</li>
-  </ul>
-  
-  <h4>Step 2: Acknowledgment Reminders</h4>
-  <ul>
-    <li>Same flow as Single SLA.</li>
-    <li>Percentages are applied against effective response time.</li>
-  </ul>
-  
-  <h4>Step 3: Progress Reminders</h4>
-  <ul>
-    <li>Same flow as Single SLA.</li>
-    <li>Percentages are applied against effective resolution time.</li>
-  </ul>
-  
-  <h4>Step 4: Leadership Visibility Levels</h4>
-  <ul>
-    <li>Same flow as Single SLA.</li>
-    <li>Use percentage-based triggers with time hints for each level.</li>
-  </ul>
-  
-  <h4>Step 5: Review &amp; Submit</h4>
-  <ul>
-    <li>Validate reminder percentages and leadership trigger order.</li>
-    <li>Click <strong>Submit</strong>.</li>
-  </ul>
-  
-  <p><em>Outcome:</em> Priority-based SLA is created and can be assigned to projects. This is useful when P1, P2, P3, etc. require different response/resolution targets.</p>
-  
-  <hr />
-  
-  <h4>Best Practices</h4>
-  <ul>
-    <li>Start simple: one SLA per major workflow, then expand.</li>
-    <li>Use realistic reminder percentages (avoid too many early reminders).</li>
-    <li>Keep leadership levels strictly increasing by trigger percentage.</li>
-    <li>If you use hierarchy-based escalation, upload hierarchy data first.</li>
-  </ul>
+  <h2>3. Create SLA Rules</h2>
+<p>
+  In AutoChase, an SLA rule defines expected timelines for issue handling and controls when reminders and leadership visibility should trigger.
+  You can create either:
+  <strong>Single SLA</strong> (same timings for all priorities) or
+  <strong>Priority-based SLA (P1–P5)</strong> (different timings by priority).
+</p>
+
+<h3>What each SLA field means</h3>
+<ul>
+  <li><strong>SLA Name</strong>: Friendly name for this rule (for example, “Support SLA – P1 to P5”).</li>
+  <li><strong>Response Time</strong>: Maximum allowed time to first acknowledge/respond.</li>
+  <li><strong>Resolution Time</strong>: Maximum allowed time to resolve/close the issue.</li>
+  <li><strong>Warning Threshold (%)</strong>: Percentage of SLA time where status changes to <em>At Risk</em> (for example, 80%).</li>
+  <li><strong>Acknowledgment Reminders</strong>: Reminders based on response-time usage (for example, 25%, 50%, 75%).</li>
+  <li><strong>Progress Reminders</strong>: Reminders based on resolution-time usage to request status updates.</li>
+  <li><strong>Progress Check Interval</strong>: How often AutoChase checks for progress reminders.</li>
+  <li><strong>Leadership Visibility Levels</strong>: Escalation thresholds that notify higher levels in your manager chain.</li>
+  <li><strong>Trigger Base (Response/Resolution)</strong>: Whether a leadership level is calculated from response time or resolution time.</li>
+</ul>
+
+<hr />
+
+<h3>Mode 1: Single SLA (same for all priorities)</h3>
+<p>
+  Use this when all tickets should follow one common response and resolution target.
+</p>
+
+<h4>Step 1: SLA Timing</h4>
+<ol>
+  <li>Go to <strong>SLA rules</strong> tab and click <strong>Create SLA</strong>.</li>
+  <li>Enter <strong>SLA Name</strong>.</li>
+  <li>Select <strong>Single SLA</strong>.</li>
+  <li>(Optional) Fill:
+    <ul>
+      <li><code>Issue type</code> (for example, Bug)</li>
+      <li><code>Priority filter</code> (for example, High)</li>
+    </ul>
+  </li>
+  <li>Set:
+    <ul>
+      <li><strong>Response Time</strong> (required)</li>
+      <li><strong>Resolution Time</strong> (required)</li>
+      <li><strong>Warning Threshold (%)</strong> (recommended 80)</li>
+    </ul>
+  </li>
+  <li>Click <strong>Next</strong>.</li>
+</ol>
+
+<h4>Step 2: Acknowledgment Reminders</h4>
+<ol>
+  <li>Add one or more reminder percentages (up to 3), such as <code>25</code>, <code>50</code>, <code>75</code>.</li>
+  <li>These are calculated from <strong>response time</strong>.</li>
+  <li>Edit the acknowledgment message template if needed.</li>
+  <li>Click <strong>Next</strong>.</li>
+</ol>
+
+<h4>Step 3: Progress Reminders</h4>
+<ol>
+  <li>Add one or more reminder percentages (up to 3), such as <code>50</code>, <code>75</code>.</li>
+  <li>These are calculated from <strong>resolution time</strong>.</li>
+  <li>Set <strong>Progress check interval (minutes)</strong>.</li>
+  <li>Edit the progress message template if needed.</li>
+  <li>Click <strong>Next</strong>.</li>
+</ol>
+
+<h4>Step 4: Leadership Visibility Levels</h4>
+<ol>
+  <li>Choose number of levels (for example, 1 to 6).</li>
+  <li>For each level:
+    <ul>
+      <li>Select trigger base: <strong>Response Time</strong> or <strong>Resolution Time</strong>.</li>
+      <li>Set trigger percentage (1–99).</li>
+      <li>Review the computed time hint (for clarity).</li>
+    </ul>
+  </li>
+  <li>Update leadership comment template if required.</li>
+  <li>Click <strong>Next</strong>.</li>
+</ol>
+
+<h4>Step 5: Review &amp; Submit</h4>
+<ol>
+  <li>Review:
+    <ul>
+      <li>Acknowledgment reminders</li>
+      <li>Progress reminders</li>
+      <li>Leadership visibility rules</li>
+      <li>Combined alert trigger order</li>
+    </ul>
+  </li>
+  <li>Click <strong>Submit</strong> (or <strong>Create SLA</strong>).</li>
+</ol>
+
+<p><strong>Result:</strong> Single SLA is saved and can be assigned from the Projects tab.</p>
+
+<hr />
+
+<h3>Mode 2: Priority-based SLA (P1–P5)</h3>
+<p>
+  Use this when different priorities need different response/resolution targets.
+</p>
+
+<h4>Step 1: SLA Timing</h4>
+<ol>
+  <li>Click <strong>Create SLA</strong>.</li>
+  <li>Enter <strong>SLA Name</strong>.</li>
+  <li>Select <strong>Priority-based SLA (P1–P5)</strong>.</li>
+  <li>In the P1–P5 grid, enter response and resolution times per priority.</li>
+  <li><strong>Important:</strong> At least one priority row must have both response and resolution values.</li>
+  <li>Click <strong>Next</strong>.</li>
+</ol>
+
+<h4>How priority mapping works</h4>
+<ul>
+  <li>AutoChase maps Jira priorities to internal levels P1–P5.</li>
+  <li>Typical mapping:
+    <ul>
+      <li>P1: Highest/Critical/Blocker</li>
+      <li>P2: High/Major</li>
+      <li>P3: Medium</li>
+      <li>P4: Low/Minor</li>
+      <li>P5: Lowest/Trivial</li>
+    </ul>
+  </li>
+</ul>
+
+<h4>Step 2: Acknowledgment Reminders</h4>
+<p>
+  Same flow as Single SLA. Reminders are percentage-based and calculated from effective response time.
+</p>
+
+<h4>Step 3: Progress Reminders</h4>
+<p>
+  Same flow as Single SLA. Reminders are percentage-based and calculated from effective resolution time.
+</p>
+
+<h4>Step 4: Leadership Visibility Levels</h4>
+<p>
+  Same flow as Single SLA. Configure percentage triggers per level using response/resolution as base.
+</p>
+
+<h4>Step 5: Review &amp; Submit</h4>
+<ol>
+  <li>Confirm reminders, leadership levels, and combined trigger order.</li>
+  <li>Click <strong>Submit</strong>.</li>
+</ol>
+
+<p><strong>Result:</strong> Priority-based SLA is saved and ready to be assigned to projects.</p>
+
+<hr />
+
+<h3>Status lifecycle used by all SLA modes</h3>
+<ul>
+  <li><strong>On Track</strong>: Issue is within configured SLA limits.</li>
+  <li><strong>At Risk</strong>: Warning threshold reached.</li>
+  <li><strong>Breach</strong>: Resolution threshold crossed.</li>
+</ul>
+
+<h3>Recommended best practices</h3>
+<ul>
+  <li>Start with a small number of SLAs and expand gradually.</li>
+  <li>Use clear naming conventions (for example, “Support – Priority SLA”).</li>
+  <li>Keep reminder percentages realistic to avoid notification fatigue.</li>
+  <li>Keep leadership levels strictly increasing by trigger percentage.</li>
+  <li>Upload hierarchy data before relying on manager-chain visibility.</li>
+</ul>
     
   <h3>2. Add Projects</h3>
   <p>Add the Jira project keys you want to track (e.g. <code>PROJ</code>, <code>SUPPORT</code>). You can set a project owner email for escalation fallback.</p>
