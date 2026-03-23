@@ -38,7 +38,7 @@
   <img src="images/Upload_Team_Hierarchy.png"
        alt="Escalation hierarchy tab selected in AutoChase admin"
        style="width:100%; max-width:1200px; height:auto; border-radius:8px; margin:12px 0; image-rendering:auto;" />
-</a>
+  </a>
   
   <p><strong>Step 1: Download the template</strong></p>
   <p>Click <strong>Download template</strong> to get a CSV/TSV file in the correct format. Fill in the required columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>.</p>
@@ -59,8 +59,42 @@
   <p>Check the table to confirm your hierarchy data and Jira accountIds are populated. You can also add or edit employees manually using <strong>Add employee</strong>.</p>
 
   
-  <h3>1. Create Departments & Teams </h3>
-  <p>In the admin page, create departments and teams. These </p>
+  <h3>1. Create Departments </h3>
+  <p>Use Departments to model your organisation structure for reporting and escalation hierarchy.</p>
+
+  <a href="images/Create_Departments.png" target="_blank" rel="noopener noreferrer">
+  <img src="images/Create_Departments.png"
+       alt="Create Departments tab selected in AutoChase admin"
+       style="width:100%; max-width:1200px; height:auto; border-radius:8px; margin:12px 0; image-rendering:auto;" />
+  </a>
+  
+  <h4>Step 1: Open Departments</h4>
+  <p>In AutoChase Admin, click <strong>Departments</strong> from the left navigation.</p>
+  
+  <h4>Step 2: Add a Department</h4>
+  <p>Click <strong>Add department</strong>, then enter:</p>
+  <ul>
+    <li><code>Name</code> (required)</li>
+    <li><code>Description</code> (optional)</li>
+  </ul>
+  <p>Click <strong>Save</strong>.</p>
+  
+  <h4>Step 3: Verify in the table</h4>
+  <p>The new department appears in the Departments table with status and action buttons.</p>
+  
+  <h4>Step 4: Edit or Delete</h4>
+  <ul>
+    <li>Use <strong>Edit</strong> to update name/description.</li>
+    <li>Use <strong>Delete</strong> to remove a department.</li>
+  </ul>
+  <p><em>Note:</em> If a department is deleted, teams linked to it become unassigned.</p>
+  
+  <h4>Best Practice</h4>
+  <ul>
+    <li>Keep department names consistent (e.g., Engineering, Support, Product).</li>
+    <li>Create departments before creating teams for cleaner mapping.</li>
+    <li>Departments are for organisational structure; SLA defaults are configured at project/SLA level.</li>
+  </ul>
 
   <h3>2. Add Projects</h3>
   <p>Add the Jira project keys you want to track (e.g. <code>PROJ</code>, <code>SUPPORT</code>). You can set a project owner email for escalation fallback.</p>
