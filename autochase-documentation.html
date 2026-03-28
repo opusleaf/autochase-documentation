@@ -157,18 +157,16 @@
       <ol>
         <li>Install AutoChase from the Atlassian Marketplace.</li>
         <li>Open <strong>Jira → Apps → AutoChase</strong> (or <strong>Manage apps → AutoChase</strong>).</li>
-        <li>Configure <strong>Escalation hierarchy</strong>, <strong>Teams</strong>, and <strong>Departments</strong>.</li>
+        <li>Optional: configure <strong>Departments</strong>, <strong>Teams</strong>, and <strong>Escalation hierarchy</strong>.</li>
         <li>Create <strong>SLA rules</strong>, add <strong>Projects</strong> from Jira, and assign default SLAs / teams as needed.</li>
       </ol>
       <p class="doc-muted">Sidebar order in the app: Dashboard, Tracked issues, SLA analytics, Projects, SLA rules, Teams, Departments, Escalation hierarchy.</p>
+      <p class="doc-note">For department/team rollups and SLA analytics exports, configure at least one department, one team, and escalation hierarchy data. The app shows a reminder until this is complete.</p>
     </section>
 
     <section id="dashboard" class="doc-section">
       <h2>Dashboard</h2>
       <p class="doc-lead">High-level overview of SLA tracking and where to drill in next.</p>
-      <a href="images/Dashboard.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Dashboard.png" alt="Dashboard tab selected in AutoChase admin" />
-      </a>
       <p>The <strong>Dashboard</strong> view summarizes health across your configured projects and tracked issues.</p>
       <h3>KPI cards</h3>
       <div class="doc-kpi-grid">
@@ -188,9 +186,6 @@
     <section id="tracked-issues" class="doc-section">
       <h2>Tracked issues</h2>
       <p class="doc-lead">Live list of issues AutoChase is monitoring, with quick status filters.</p>
-       <a href="images/Tracked_issues.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Tracked_issues.png" alt="Tracked Issues tab selected in AutoChase admin" />
-      </a>
       <h3>KPI summary</h3>
       <p>At the top: <strong>Total</strong>, <strong>On track</strong>, <strong>At risk</strong>, <strong>Breached</strong> — counts with the same labels as the dashboard; clicking a card applies that status filter.</p>
       <h3>Filters</h3>
@@ -203,9 +198,6 @@
     <section id="sla-analytics" class="doc-section">
       <h2>SLA analytics</h2>
       <p class="doc-lead">Reporting and export for tracked issues across org dimensions.</p>
-      <a href="images/sla_analytics.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/sla_analytics.png" alt="SLA Analytics tab selected in AutoChase admin" />
-      </a>
       <p><strong>SLA analytics</strong> provides basic reporting on tracked issues with CSV export.</p>
       <h3>Filters (top row)</h3>
       <ul>
@@ -225,9 +217,6 @@
     <section id="projects" class="doc-section">
       <h2>Projects</h2>
       <p class="doc-lead">Choose which Jira projects AutoChase tracks and how new issues get a default SLA.</p>
-      <a href="images/Projects.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Projects.png" alt="Projects tab selected in AutoChase admin" />
-      </a>
       <p>Select a project from your Jira instance to track. Assign a <strong>default SLA</strong> so new issues can pick up that SLA automatically (subject to your SLA matching rules).</p>
       <h3>Sync and search</h3>
       <ul>
@@ -258,8 +247,8 @@
         <li><strong>Jira project key</strong> (e.g. <code>PROJ</code>) — required</li>
         <li><strong>Description</strong> (optional)</li>
         <li><strong>Project owner email</strong> — required; escalation when unassigned</li>
-        <li><strong>Team</strong> </li>
-        <li><strong>Default SLA</strong> — for new issues in this project</li>
+        <li><strong>Team</strong> (optional)</li>
+        <li><strong>Default SLA</strong> (optional) — for new issues in this project</li>
       </ul>
       <p class="doc-note">Use <strong>Assign SLA</strong> / <strong>Assign team</strong> from the list for quick changes without opening the full edit form.</p>
     </section>
@@ -459,7 +448,29 @@
     <section id="issue-panel" class="doc-section">
       <h2>Issue panel</h2>
       <p class="doc-lead">Per-issue SLA context inside Jira.</p>
-      <p>On each tracked issue, open the right-hand <strong>SLA Status</strong> panel to see status, escalation level, time remaining, acknowledgment state, and to assign an SLA manually when allowed.</p>
+      <p>Open an issue that belongs to a <strong>tracked project</strong>, then use Jira’s issue view to open the AutoChase <strong>SLA Status</strong> issue panel (location depends on your Jira layout — often the right sidebar under app panels). The panel title may include an environment label (for example <strong>DEV</strong>) when you are not on production.</p>
+      <a href="images/SLA_Status_panel.png" target="_blank" rel="noopener noreferrer">
+        <img class="doc-img" src="images/SLA_Status_panel.png" alt="SLA Status issue panel — summary and actions" />
+      </a>
+
+      <h3>What you see (summary)</h3>
+      <p>The left side of the panel is a read-only snapshot of how this issue lines up against the assigned SLA:</p>
+      <ul>
+        <li><strong>Status</strong> — Current SLA state (for example <strong>On track</strong>, <strong>At risk</strong>, or <strong>Breach</strong>), shown as a colored badge.</li>
+        <li><strong>Escalation level</strong> — How far leadership visibility has progressed for this issue (numeric level; higher means more senior visibility has been applied per your SLA rules).</li>
+        <li><strong>Acknowledgment</strong> — Whether the issue has been acknowledged for SLA purposes (for example <strong>Acknowledged</strong> or pending).</li>
+        <li><strong>Policy</strong> — The <strong>SLA rule name</strong> applied to this issue, plus how it was chosen (for example <em>Source: Auto policy match</em> when it came from project defaults / matching rules rather than a manual pick).</li>
+        <li><strong>Response SLA</strong> — Target response time and <strong>time left</strong> (or <code>0m left</code> when the response window is exhausted).</li>
+        <li><strong>Resolution SLA</strong> — Target resolution time and <strong>time left</strong> (or <code>0m left</code> when past due).</li>
+      </ul>
+
+      <h3>Actions</h3>
+      <p>The right side is for quick updates on this issue:</p>
+      <ul>
+        <li><strong>Quick acknowledge</strong> — One-click acknowledgment when acknowledgment is still needed; if already captured, the panel shows that acknowledgment is recorded.</li>
+        <li><strong>Assign SLA</strong> — Choose which SLA rule applies to this issue from the dropdown, then click <strong>Save</strong> to apply. Use this when you need to override or set the SLA manually (subject to your org’s rules).</li>
+      </ul>
+      <p class="doc-note">If the panel says the issue is not tracked, add the project under <strong>Projects</strong> and sync or update the issue so AutoChase can pick it up.</p>
     </section>
 
     <section id="troubleshooting" class="doc-section">
@@ -483,6 +494,7 @@
       <p class="doc-muted"><em>AutoChase runs on Atlassian Forge. Data stays in your Jira site — no external app servers for your issue content.</em></p>
     </section>
 
+    <p class="doc-footer">AutoChase documentation — edit this file to match your Marketplace listing before publish.</p>
   </div>
 </body>
 </html>
