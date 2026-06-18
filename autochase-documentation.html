@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AutoChase — Product documentation</title>
   <style>
     :root {
@@ -35,7 +35,7 @@
       box-shadow: var(--shadow);
     }
     .doc-hero h1 { margin: 0 0 8px; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
-    .doc-hero p { margin: 0; opacity: 0.95; font-size: 1.05rem; max-width: 52ch; }
+    .doc-hero p { margin: 0; opacity: 0.95; font-size: 1.05rem; max-width: 58ch; }
     .doc-toc {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -103,12 +103,6 @@
       margin: 12px 0;
       border: 1px solid var(--border);
     }
-    hr.doc-rule {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 28px 0;
-    }
     .doc-kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -126,375 +120,350 @@
   </style>
 </head>
 <body>
-  <div class="doc-wrap">
-    <header class="doc-hero">
-      <h1>AutoChase documentation</h1>
-      <p>Track SLAs for Jira issues, send reminders when work is at risk, and surface leadership visibility through your org hierarchy.</p>
-    </header>
+<div class="doc-wrap">
 
-    <nav class="doc-toc" aria-label="On this page">
-      <h2>On this page</h2>
-      <ul>
-        <li><a href="#getting-started">Getting started</a></li>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#tracked-issues">Tracked issues</a></li>
-        <li><a href="#sla-analytics">SLA analytics</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#hierarchy">Escalation hierarchy</a></li>
-        <li><a href="#departments">Departments</a></li>
-        <li><a href="#teams">Teams</a></li>
-        <li><a href="#sla-rules">SLA rules</a></li>
-        <li><a href="#how-it-works">How it works</a></li>
-        <li><a href="#issue-panel">Issue panel</a></li>
-        <li><a href="#troubleshooting">Troubleshooting</a></li>
-        <li><a href="#support">Support</a></li>
-      </ul>
-    </nav>
+  <header class="doc-hero">
+    <h1>AutoChase documentation</h1>
+    <p>Automate SLA tracking, reminders, escalations, and capacity planning for Jira Cloud teams.</p>
+  </header>
 
-    <section id="getting-started" class="doc-section">
-      <h2>Getting started</h2>
-      <p class="doc-lead">Install the app, open admin, then wire up projects and SLAs.</p>
-      <ol>
-        <li>Install AutoChase from the Atlassian Marketplace.</li>
-        <li>Open <strong>Jira → Apps → AutoChase</strong> (or <strong>Manage apps → AutoChase</strong>).</li>
-        <li>Configure <strong>Departments</strong>, <strong>Teams</strong>, and <strong>Escalation hierarchy</strong>.</li>
-        <li>Create <strong>SLA rules</strong>, add <strong>Projects</strong> from Jira, and assign default SLAs / teams as needed.</li>
-      </ol>
-      <p class="doc-muted">Sidebar order in the app: Dashboard, Tracked issues, SLA analytics, Projects, SLA rules, Teams, Departments, Escalation hierarchy.</p>
-      <p class="doc-note">For department/team rollups and SLA analytics exports, configure at least one department, one team, and escalation hierarchy data. The app shows a reminder until this is complete.</p>
-    </section>
+  <nav class="doc-toc" aria-label="Table of contents">
+    <h2>On this page</h2>
+    <ul>
+      <li><a href="#getting-started">Getting started</a></li>
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#tracked-issues">Tracked issues</a></li>
+      <li><a href="#sla-analytics">SLA analytics</a></li>
+      <li><a href="#reports">Reports</a></li>
+      <li><a href="#capacity">Capacity planning</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#sla-rules">SLA rules</a></li>
+      <li><a href="#working-calendar">Working calendar</a></li>
+      <li><a href="#departments">Departments</a></li>
+      <li><a href="#teams">Teams</a></li>
+      <li><a href="#escalation-hierarchy">Escalation hierarchy</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#issue-panel">Issue panel</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </nav>
 
-    <section id="dashboard" class="doc-section">
-      <h2>Dashboard</h2>
-      <p class="doc-lead">High-level overview of SLA tracking and where to drill in next.</p>
-      <p>The <strong>Dashboard</strong> view summarizes health across your configured projects and tracked issues.</p>
-      <h3>KPI cards</h3>
-      <div class="doc-kpi-grid">
-        <div class="doc-kpi"><strong>Active projects</strong> Count of projects you have added in AutoChase. Click to open the Projects tab.</div>
-        <div class="doc-kpi"><strong>Active SLAs</strong> Count of SLA definitions. Click to open SLA rules.</div>
-        <div class="doc-kpi"><strong>Total issues</strong> Tracked issues across enabled projects. Click to open Tracked issues (all).</div>
-        <div class="doc-kpi"><strong>Issues in breach</strong> Issues currently in breach status. Click to open Tracked issues filtered to breaches.</div>
-      </div>
-      <h3>SLA compliance</h3>
-      <p>Counts for <strong>On track</strong>, <strong>At risk</strong>, and <strong>Breached</strong> across tracked issues (same lifecycle as elsewhere in the app).</p>
-      <h3>Recent issues</h3>
-      <p>Table columns: <strong>Issue key</strong> (link to Jira), <strong>Project</strong>, <strong>Status</strong>, <strong>Escalation</strong> (current leadership visibility level).</p>
-      <h3>Top breached projects</h3>
-      <p>Shows projects with the most breached issues (up to five). Use <strong>View</strong> on a row to jump to tracked issues filtered for that project’s breaches.</p>
-    </section>
+  <!-- GETTING STARTED -->
+  <section class="doc-section" id="getting-started">
+    <h2>Getting started</h2>
+    <p class="doc-lead">Install AutoChase, connect your Jira projects, define SLAs, and configure team capacity alongside your escalation structure.</p>
+    <ol>
+      <li>Install AutoChase from the Atlassian Marketplace.</li>
+      <li>Open Jira → <strong>Apps → AutoChase</strong> (or Manage apps → AutoChase).</li>
+      <li>Add <strong>Projects</strong> from Jira and assign default SLAs and teams.</li>
+      <li>Create <strong>SLA rules</strong> with response/resolution times, reminders, leadership visibility, and working hours.</li>
+      <li>Open <strong>Capacity</strong>, configure demand settings and scope, then refresh the capacity report.</li>
+      <li>For department/team analytics and manager-chain escalations, configure <strong>Departments</strong>, <strong>Teams</strong>, and <strong>Escalation hierarchy</strong>.</li>
+    </ol>
+    <p><strong>Navigation order in the app:</strong> Dashboard · Tracked issues · SLA analytics · Reports · Capacity · Projects · SLA rules · Teams · Departments · Escalation hierarchy</p>
+    <div class="doc-note">
+      For full SLA analytics rollups and team reports, add at least one department, one team, and escalation hierarchy data. A setup reminder appears on Dashboard and Reports until this is complete.
+    </div>
+    <!-- Screenshot: Admin home with navigation -->
+    <p class="doc-muted">Screenshot placeholder: AutoChase admin navigation</p>
+  </section>
 
-    <section id="tracked-issues" class="doc-section">
-      <h2>Tracked issues</h2>
-      <p class="doc-lead">Live list of issues AutoChase is monitoring, with quick status filters.</p>
-      <h3>KPI summary</h3>
-      <p>At the top: <strong>Total</strong>, <strong>On track</strong>, <strong>At risk</strong>, <strong>Breached</strong> — counts with the same labels as the dashboard; clicking a card applies that status filter.</p>
-      <h3>Filters</h3>
-      <p>Filter row: <strong>All</strong>, <strong>On track</strong>, <strong>At risk</strong>, <strong>Breached</strong>, <strong>Resolved</strong>. When a filter is active, the UI shows how many issues match out of the total tracked set.</p>
-      <h3>Table</h3>
-      <p>Columns: <strong>Issue key</strong>, <strong>Project</strong>, <strong>Priority</strong>, <strong>SLA</strong> (name of the assigned SLA; a hint may appear if priority timing needs attention), <strong>Status</strong>, <strong>Escalation</strong> (level).</p>
-      <p class="doc-note">If the list is empty, add a project under <strong>Projects</strong> and create or sync issues in that project.</p>
-    </section>
+  <!-- DASHBOARD -->
+  <section class="doc-section" id="dashboard">
+    <h2>Dashboard</h2>
+    <p class="doc-lead">High-level SLA health across your tracked projects and issues.</p>
+    <h3>KPI cards</h3>
+    <div class="doc-kpi-grid">
+      <div class="doc-kpi"><strong>Active projects</strong> Projects added in AutoChase. Click to open Projects.</div>
+      <div class="doc-kpi"><strong>Active SLAs</strong> SLA definitions. Click to open SLA rules.</div>
+      <div class="doc-kpi"><strong>On track</strong> Open issues within SLA limits.</div>
+      <div class="doc-kpi"><strong>At risk</strong> Issues past the warning threshold.</div>
+      <div class="doc-kpi"><strong>Breached</strong> Issues past resolution SLA. Click to filter tracked issues.</div>
+    </div>
+    <h3>Issues needing attention</h3>
+    <p>Open issues sorted by urgency. Columns include Issue, Assignee, SLA, Mode, SLA progress, Status, Acknowledgment, and Escalation level.</p>
+    <h3>Top breached projects</h3>
+    <p>Up to five projects with the most breaches. Use <strong>View</strong> to jump to tracked issues for that project.</p>
+  </section>
 
-    <section id="sla-analytics" class="doc-section">
-      <h2>SLA analytics</h2>
-      <p class="doc-lead">Reporting and export for tracked issues across org dimensions.</p>
-      <p><strong>SLA analytics</strong> provides basic reporting on tracked issues with CSV export.</p>
-      <h3>Filters (top row)</h3>
-      <ul>
-        <li><strong>Department</strong> — All departments, or one department.</li>
-        <li><strong>Team</strong> — All teams, or one team.</li>
-        <li><strong>Project</strong> — All projects, or one Jira project key.</li>
-        <li><strong>SLA</strong> — All SLAs, or one SLA definition.</li>
-        <li><strong>Status</strong> — All statuses, or On track / At risk / Breached / Resolved.</li>
-        <li><strong>Export CSV</strong> — downloads analytics data for the current filter context.</li>
-      </ul>
-      <h3>Department summary</h3>
-      <p>Aggregates by department: <strong>Total</strong>, <strong>On track</strong>, <strong>At risk</strong>, <strong>Breached</strong>, <strong>Resolved</strong>, <strong>% Breached</strong>. Click a row to filter the detailed table below.</p>
-      <h3>Detailed table</h3>
-      <p>Columns: <strong>Issue</strong>, <strong>Department</strong>, <strong>Team</strong>, <strong>Project</strong>, <strong>Priority</strong>, <strong>SLA</strong>, <strong>Status</strong>, <strong>Escalation</strong>, <strong>Ack</strong> (acknowledgment state).</p>
-    </section>
+  <!-- TRACKED ISSUES -->
+  <section class="doc-section" id="tracked-issues">
+    <h2>Tracked issues</h2>
+    <p class="doc-lead">Live monitoring with reminders, escalation, and SLA assignment controls.</p>
+    <h3>Filters</h3>
+    <p>Filter by status: All, On track, At risk, Breached, Resolved. You can also filter by SLA tracking on/off.</p>
+    <h3>Table</h3>
+    <p>Columns include Track (on/off), Issue, Assignee, SLA, Mode, Priority, SLA progress, Status, Acknowledgment, and Escalation. Uncheck <strong>Track</strong> to pause SLA enforcement on an issue, or click an SLA name to reassign policy.</p>
+    <p class="doc-muted">If empty, add a project under Projects and create or sync issues in Jira.</p>
+  </section>
 
-    <section id="projects" class="doc-section">
-      <h2>Projects</h2>
-      <p class="doc-lead">Choose which Jira projects AutoChase tracks and how new issues get a default SLA.</p>
-      <p>Select a project from your Jira instance to track. Assign a <strong>default SLA</strong> so new issues can pick up that SLA automatically (subject to your SLA matching rules).</p>
-      <h3>Sync and search</h3>
-      <ul>
-        <li><strong>Search projects</strong> — filter the list of projects already added in AutoChase.</li>
-        <li><strong>Sync projects</strong> — pulls project metadata from Jira into AutoChase.</li>
-        <li><strong>Sync issues</strong> — pulls issues for tracked projects into tracking (bounded per project in the backend).</li>
-      </ul>
-      <h3>Add a project</h3>
-      <ol>
-        <li>Click <strong>Load projects</strong> to populate the dropdown from Jira (if needed).</li>
-        <li>Pick a project in <strong>Load projects</strong> dropdown.</li>
-        <li>Enter <strong>Owner email</strong> (required). Used for escalation when a ticket has no assignee.</li>
-        <li>Click <strong>Add project</strong>.</li>
-      </ol>
-      <p class="doc-muted">Projects are sourced from the Jira list above; owner email is required for escalation when tickets are unassigned.</p>
-      <h3>Project list actions</h3>
-      <p>Each row shows project name, key, default SLA name, and team. Actions:</p>
-      <ul>
-        <li><strong>Edit</strong> — opens the project dialog (see below).</li>
-        <li><strong>Assign SLA</strong> — set or clear the <strong>default SLA</strong> for new issues in this project.</li>
-        <li><strong>Assign team</strong> — link the project to a team (organizational structure; SLA resolution order is described in that modal).</li>
-        <li><strong>Remove</strong> — stop tracking this project in AutoChase.</li>
-      </ul>
-      <h3>Edit project (modal)</h3>
-      <p>Fields:</p>
-      <ul>
-        <li><strong>Project name</strong></li>
-        <li><strong>Jira project key</strong> (e.g. <code>PROJ</code>) — required</li>
-        <li><strong>Description</strong> </li>
-        <li><strong>Project owner email</strong> — required; escalation when unassigned</li>
-        <li><strong>Team</strong> </li>
-        <li><strong>Default SLA</strong> — for new issues in this project</li>
-      </ul>
-      <p class="doc-note">Use <strong>Assign SLA</strong> / <strong>Assign team</strong> from the list for quick changes without opening the full edit form.</p>
-    </section>
+  <!-- SLA ANALYTICS -->
+  <section class="doc-section" id="sla-analytics">
+    <h2>SLA analytics</h2>
+    <p class="doc-lead">Department and SLA rollups with a filterable issue list and CSV export.</p>
+    <h3>Filters</h3>
+    <ul>
+      <li>Department, Team, Project, SLA, Status</li>
+      <li><strong>Export CSV</strong> for the current filter context</li>
+    </ul>
+    <h3>Summary rollups</h3>
+    <p>Switch between <strong>By department &amp; team</strong> and <strong>By SLA</strong>. Click a row to filter the issue list below. Status counts and % met apply to resolved tickets in the filtered set.</p>
+    <h3>Issue list</h3>
+    <p>Columns: Issue, Org (department/team), Project, Priority, SLA, Status, Escalation, Acknowledgment.</p>
+    <div class="doc-note">Summary rollups and the issue list use the same filters, so counts always match the table below.</div>
+  </section>
 
-    <section id="hierarchy" class="doc-section">
-      <h2>Escalation hierarchy</h2>
-      <p class="doc-lead">Upload your org structure so manager-chain visibility and escalations resolve correctly.</p>
-      <p>Go to the <strong>Escalation hierarchy</strong> tab in the sidebar.</p>
-      <a href="images/Upload_Team_Hierarchy.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Upload_Team_Hierarchy.png" alt="Escalation hierarchy tab selected in AutoChase admin" />
-      </a>
-      <h3>Step 1: Download the template</h3>
-      <p>Click <strong>Download template</strong> for a CSV/TSV in the correct format. Columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>.</p>
-      <h3>Step 2: Import the data</h3>
-      <ul>
-        <li><strong>Paste</strong> CSV/TSV into the text area, or</li>
-        <li><strong>Import (choose file)</strong> — CSV, TSV, or Excel (.xlsx/.xls).</li>
-      </ul>
-      <p class="doc-muted">Apple Numbers files should be exported to Excel or CSV first. After import, data appears in the table; you may see progress such as “Importing…” and “Resolving Jira account IDs…”.</p>
-      <h3>Step 3: Resolve Jira IDs</h3>
-      <p>Click <strong>Resolve Jira IDs</strong> to fetch Jira account IDs from email addresses (requires <code>read:jira-user</code>). This links rows to Jira users for escalations and watchers.</p>
-      <h3>Step 4: Verify</h3>
-      <p>Confirm hierarchy and account IDs in the table. Use <strong>Add employee</strong> to add or edit rows manually.</p>
-    </section>
+  <!-- REPORTS -->
+  <section class="doc-section" id="reports">
+    <h2>Reports</h2>
+    <p class="doc-lead">Shareable SLA summaries for teams and leadership, with integrated capacity insights.</p>
+    <h3>Report types</h3>
+    <table>
+      <tr><th>Type</th><th>Contents</th></tr>
+      <tr><td>Team SLA health</td><td>SLA metrics for a selected team or all teams</td></tr>
+      <tr><td>Leadership digest</td><td>Executive summary with SLA health and capacity snapshot</td></tr>
+      <tr><td>Full report</td><td>Complete SLA and capacity view for leadership reviews</td></tr>
+    </table>
+    <h3>Options</h3>
+    <ul>
+      <li>Filter by team and optional date range</li>
+      <li>Include SLA section and capacity section (Leadership and Full reports)</li>
+      <li><strong>Generate report</strong>, then copy for Confluence, export JSON/CSV, or Print / PDF</li>
+    </ul>
+    <p>Date range filters SLA tickets (resolved in window, or still open and created before end date). Capacity shows current workload at generation time.</p>
+  </section>
 
-    <section id="departments" class="doc-section">
-      <h2>Departments</h2>
-      <p class="doc-lead">Organizational buckets for reporting and structure.</p>
-      <p>Use <strong>Departments</strong> to model your organisation for reporting and escalation context. Open <strong>Departments</strong> from the left navigation.</p>
-      <a href="images/Add_Department.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Add_Department.png" alt="Departments screen — add and save a department" />
-      </a>
-      <h3>Add a department</h3>
-      <p>Click <strong>Add department</strong>, then enter <code>Name</code> (required) and <code>Description</code> (optional). Click <strong>Save</strong>.</p>
-      <h3>Manage</h3>
-      <p>The table lists departments with status. Use <strong>Edit</strong> or <strong>Delete</strong>. If a department is deleted, teams linked to it become unassigned.</p>
-      <h4>Best practice</h4>
-      <ul>
-        <li>Keep names consistent (e.g. Engineering, Support, Product).</li>
-        <li>Create departments before teams when possible.</li>
-        <li>SLA defaults are configured at project/SLA level, not on the department row itself.</li>
-      </ul>
-    </section>
+  <!-- CAPACITY -->
+  <section class="doc-section" id="capacity">
+    <h2>Capacity planning</h2>
+    <p class="doc-lead">See open Jira work against each person’s weekly capacity. AutoChase combines SLA deadlines with workload so you can spot overload before breach.</p>
 
-    <section id="teams" class="doc-section">
-      <h2>Teams</h2>
-      <p class="doc-lead">Group projects under departments for clearer analytics and structure.</p>
-      <p>Open <strong>Teams</strong> from the left navigation.</p>
-      <a href="images/Create_Teams.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Create_Teams.png" alt="Teams screen — create and save a team" />
-      </a>
-      <h3>Add a team</h3>
-      <p>Click <strong>Add team</strong>, enter <code>Team name</code> (required) and <code>Department</code>, then <strong>Save</strong>.</p>
-      <h3>Manage</h3>
-      <p><strong>Edit</strong> or <strong>Delete</strong> from the table. Deleting a team leaves projects unassigned from that team.</p>
-      <h4>How teams are used</h4>
-      <ul>
-        <li>Link projects to a team from the <strong>Projects</strong> tab (or project edit flow).</li>
-        <li>Teams support analytics and org context; SLA timing is driven by SLA rules and project defaults.</li>
-      </ul>
-    </section>
+    <h3>What capacity planning shows</h3>
+    <ul>
+      <li><strong>Workload (h)</strong> — open demand from assigned issues</li>
+      <li><strong>Capacity (h/wk)</strong> — available hours per week (default or per-user override)</li>
+      <li><strong>Utilization %</strong> — workload ÷ capacity</li>
+      <li><strong>Backlog (wk)</strong> — how many weeks of work at current capacity</li>
+      <li><strong>Delta (h)</strong> — hours needed above available capacity</li>
+      <li><strong>Bands</strong> — OK (&lt;85%), High (85–100%), Overload (&gt;100%)</li>
+    </ul>
 
-    <section id="sla-rules" class="doc-section">
-      <h2>SLA rules</h2>
-      <p class="doc-lead">Define response and resolution targets, reminders, and leadership visibility thresholds.</p>
-      <p>An SLA rule sets expected timelines and when reminders and leadership visibility should trigger. You can create a <strong>Single SLA</strong> (same timings for all priorities) or a <strong>Priority-based SLA (P1–P5)</strong>.</p>
+    <h3>Capacity report (main view)</h3>
+    <p>The report appears at the top of the Capacity tab. Use the toolbar to:</p>
+    <ul>
+      <li>Search by team member or project</li>
+      <li>Group <strong>By user</strong> or <strong>By project</strong></li>
+      <li>Filter by time window: All open, Sprint, Updated this month/year</li>
+      <li>Filter by utilization band; include unassigned pool</li>
+      <li><strong>Refresh</strong> and <strong>Export CSV</strong></li>
+    </ul>
+    <p>Per overloaded user, use <strong>Set Xh/wk</strong> to apply a recommended weekly hours override based on your target utilization.</p>
 
-      <h3>Field reference</h3>
-      <ul>
-        <li><strong>SLA name</strong> — Label for this rule.</li>
-        <li><strong>Response time</strong> — Max time to first acknowledge/respond.</li>
-        <li><strong>Resolution time</strong> — Max time to resolve/close.</li>
-        <li><strong>Warning threshold (%)</strong> — When status becomes <em>At risk</em> (e.g. 80%).</li>
-        <li><strong>Acknowledgment reminders</strong> — Based on response-time usage (e.g. 25%, 50%, 75%).</li>
-        <li><strong>Progress reminders</strong> — Based on resolution-time usage.</li>
-        <li><strong>Progress check interval</strong> — How often progress reminders are evaluated.</li>
-        <li><strong>Leadership visibility levels</strong> — Thresholds that notify higher levels in the manager chain.</li>
-        <li><strong>Trigger base (Response / Resolution)</strong> — Whether a level is computed from response or resolution time.</li>
-      </ul>
+    <h3>Settings (collapsible section)</h3>
+    <table>
+      <tr><th>Setting</th><th>Description</th></tr>
+      <tr><td>Enable capacity planning</td><td>Master switch for capacity reporting and issue-panel workload. Save settings after changing.</td></tr>
+      <tr><td>Scope mode</td><td><strong>Selected projects</strong> (AutoChase project list) or <strong>Kanban/Scrum board</strong></td></tr>
+      <tr><td>Default hours / week</td><td>Baseline capacity per person (e.g. 40)</td></tr>
+      <tr><td>Demand from</td><td>Remaining estimate, Original estimate, or Story points</td></tr>
+      <tr><td>Story points field</td><td>Jira custom field for story points; use <strong>Auto-detect</strong> to find it</td></tr>
+      <tr><td>Hours per story point</td><td>Converts story points to hours for workload (org-wide admin setting)</td></tr>
+      <tr><td>All project members</td><td>Include full project roster, not only assignees with open tickets</td></tr>
+      <tr><td>Per-user override</td><td>Set custom hours/week for a specific Jira user</td></tr>
+    </table>
 
-      <hr class="doc-rule" />
+    <h3>Planning &amp; trends (collapsible section)</h3>
+    <ul>
+      <li>Set <strong>Target util %</strong> and run <strong>Auto-balance overload</strong> for overloaded assignees</li>
+      <li>View capacity <strong>trend</strong> by day, week, or month (last 30–365 days)</li>
+      <li>Export trend data to CSV</li>
+    </ul>
 
-      <h3>Mode 1: Single SLA</h3>
-      <p>Use when every ticket shares one response and resolution target.</p>
-      <a href="images/Create_SLA_Rules.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Create_SLA_Rules.png" alt="SLA rules tab in AutoChase admin" />
-      </a>
-      <h4>Step 1: SLA timing</h4>
-      <a href="images/SLA_time.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/SLA_time.png" alt="Configure SLA timing" />
-      </a>
-      <ol>
-        <li>Open <strong>SLA rules</strong> and click <strong>Create SLA</strong>.</li>
-        <li>Enter <strong>SLA name</strong>.</li>
-        <li>Select <strong>Single SLA</strong>.</li>
-        <li>Set <strong>Response time</strong>, <strong>Resolution time</strong>, and <strong>Warning threshold (%)</strong> (80 is a common default).</li>
-        <li>Click <strong>Next</strong>.</li>
-      </ol>
-      <h4>Step 2: Acknowledgment reminders</h4>
-      <a href="images/Single_SLA_ACK_Remidners.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Single_SLA_ACK_Remidners.png" alt="Acknowledgment reminders" />
-      </a>
-      <ol>
-        <li>Add up to three reminder percentages (e.g. <code>25</code>, <code>50</code>, <code>75</code>) based on <strong>response time</strong>.</li>
-        <li>Edit the acknowledgment message template if needed.</li>
-        <li>Click <strong>Next</strong>.</li>
-      </ol>
-      <h4>Step 3: Progress reminders</h4>
-      <a href="images/Single_SLA_Progress_Reminders.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Single_SLA_Progress_Reminders.png" alt="Progress reminders" />
-      </a>
-      <ol>
-        <li>Add up to three percentages from <strong>resolution time</strong> (e.g. <code>50</code>, <code>75</code>).</li>
-        <li>Set <strong>Progress check interval (minutes)</strong>.</li>
-        <li>Edit the progress message template if needed.</li>
-        <li>Click <strong>Next</strong>.</li>
-      </ol>
-      <h4>Step 4: Leadership visibility levels</h4>
-      <a href="images/Single_SLA_Leadership_Visibility_Levels.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Single_SLA_Leadership_Visibility_Levels.png" alt="Leadership visibility levels" />
-      </a>
-      <ol>
-        <li>Choose the number of levels (e.g. 1–6).</li>
-        <li>For each level: trigger base <strong>Response</strong> or <strong>Resolution</strong>, trigger percentage (1–99), and review the time hint.</li>
-        <li>Update the leadership comment template if required.</li>
-        <li>Click <strong>Next</strong>.</li>
-      </ol>
-      <h4>Step 5: Review &amp; submit</h4>
-      <a href="images/Single_SLA_Review&amp;Submit.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Single_SLA_Review&amp;Submit.png" alt="Review and submit SLA" />
-      </a>
-      <ol>
-        <li>Review acknowledgment reminders, progress reminders, leadership rules, and combined trigger order.</li>
-        <li>Click <strong>Submit</strong> (or <strong>Create SLA</strong>).</li>
-      </ol>
-      <p><strong>Result:</strong> The SLA is saved and can be assigned from the Projects tab or used in matching rules.</p>
+    <h3>How demand is calculated</h3>
+    <p>AutoChase sums open issue demand per assignee:</p>
+    <ol>
+      <li>Uses <strong>Remaining estimate</strong> (or Original estimate / Story points per your setting)</li>
+      <li>If time estimate is missing, falls back to <strong>story points × hours/point</strong> when configured</li>
+      <li>Unassigned issues can appear in a separate unassigned pool</li>
+    </ol>
 
-      <hr class="doc-rule" />
+    <h3>Capacity on the issue panel</h3>
+    <p>When capacity planning is enabled, the issue side panel shows assignee workload vs. SLA resolution time remaining. This helps identify <strong>capacity at risk</strong> — when backlog exceeds time left before SLA breach.</p>
 
-      <h3>Mode 2: Priority-based SLA (P1–P5)</h3>
-      <p>Use when priorities need different response/resolution targets.</p>
-      <h4>Step 1: SLA timing</h4>
-      <a href="images/Priority-based _SLA_Timing.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/Priority-based _SLA_Timing.png" alt="Priority-based SLA timing" />
-      </a>
-      <ol>
-        <li>Click <strong>Create SLA</strong>, enter <strong>SLA name</strong>, select <strong>Priority-based SLA (P1–P5)</strong>.</li>
-        <li>Fill the P1–P5 grid with response and resolution times.</li>
-        <li>At least one priority row must have both response and resolution.</li>
-        <li>Click <strong>Next</strong>.</li>
-      </ol>
-      <h4>Priority mapping</h4>
-      <p>AutoChase maps Jira priorities to internal P1–P5. Typical mapping:</p>
-      <ul>
-        <li>P1 — Highest / Critical / Blocker</li>
-        <li>P2 — High / Major</li>
-        <li>P3 — Medium</li>
-        <li>P4 — Low / Minor</li>
-        <li>P5 — Lowest / Trivial</li>
-      </ul>
-      <h4>Steps 2–5</h4>
-      <p><strong>Acknowledgment reminders</strong>, <strong>Progress reminders</strong>, and <strong>Leadership visibility</strong> follow the same flow as Single SLA (percentages use the effective response/resolution time for the issue’s priority). Finish with <strong>Review &amp; submit</strong>.</p>
-      <p><strong>Result:</strong> Priority-based SLA is saved and can be assigned to projects.</p>
+    <div class="doc-note">Add at least one project under Projects before running a capacity report. Configure story points field if your team uses points instead of time estimates.</div>
+    <!-- Screenshot: Capacity report -->
+    <p class="doc-muted">Screenshot placeholder: Capacity report with utilization bands</p>
+  </section>
 
-      <hr class="doc-rule" />
+  <!-- PROJECTS -->
+  <section class="doc-section" id="projects">
+    <h2>Projects</h2>
+    <p class="doc-lead">Choose which Jira projects AutoChase tracks. Projects define SLA scope and capacity scope.</p>
+    <h3>Sync and add</h3>
+    <ul>
+      <li><strong>Sync projects</strong> — pull project metadata from Jira</li>
+      <li><strong>Sync issues</strong> — pull issues into AutoChase tracking</li>
+      <li><strong>Load projects</strong> — populate dropdown from Jira</li>
+      <li><strong>Owner email</strong> (required) — used for escalation when tickets are unassigned</li>
+    </ul>
+    <h3>Project actions</h3>
+    <p>Edit, Assign SLA, Assign team, or Remove. Default SLA applies to new issues (subject to matching rules). Team links support org analytics and structure.</p>
+    <p class="doc-muted">Use the <strong>Capacity</strong> tab for workload planning; use <strong>Reports</strong> for shareable SLA + capacity summaries.</p>
+  </section>
 
-      <h3>Status lifecycle</h3>
-      <ul>
-        <li><strong>On track</strong> — Within SLA limits.</li>
-        <li><strong>At risk</strong> — Warning threshold reached.</li>
-        <li><strong>Breach</strong> — Resolution threshold crossed.</li>
-      </ul>
-      <h3>Recommended practices</h3>
-      <ul>
-        <li>Start with a small set of SLAs and expand.</li>
-        <li>Use clear names (e.g. “Support – Priority SLA”).</li>
-        <li>Avoid notification fatigue — keep reminder percentages realistic.</li>
-        <li>Keep leadership levels strictly increasing by trigger percentage.</li>
-        <li>Upload hierarchy before relying on manager-chain visibility.</li>
-      </ul>
-    </section>
+  <!-- SLA RULES -->
+  <section class="doc-section" id="sla-rules">
+    <h2>SLA rules</h2>
+    <p class="doc-lead">Define response and resolution targets, reminders, leadership visibility, SLA clock behavior, and working hours.</p>
 
-    <section id="how-it-works" class="doc-section">
-      <h2>How it works</h2>
-      <p class="doc-lead">End-to-end behavior once projects and SLAs are configured.</p>
-      <ul>
-        <li><strong>Auto-tracking:</strong> New issues in enabled projects are tracked from creation (subject to sync and app rules).</li>
-        <li><strong>SLA assignment:</strong> A matching SLA is applied from project defaults and SLA rules (project, issue type, priority).</li>
-        <li><strong>Status:</strong> <code>on_track</code> → <code>at_risk</code> (at warning %) → <code>breach</code> at resolution breach.</li>
-        <li><strong>Reminders:</strong> Acknowledgment and progress reminders as usage crosses configured thresholds.</li>
-        <li><strong>Escalation / visibility:</strong> Scheduled processing applies leadership visibility rules and org hierarchy.</li>
-        <li><strong>Resolution:</strong> When an issue reaches a done/resolved state, tracking stops for that issue.</li>
-      </ul>
-      <p class="doc-muted">Configure per-SLA escalation and leadership visibility in the SLA wizard; org hierarchy powers manager-chain routing.</p>
-    </section>
+    <h3>SLA modes</h3>
+    <ul>
+      <li><strong>Single SLA</strong> — same response/resolution for all priorities</li>
+      <li><strong>Priority-based SLA (P1–P5)</strong> — different targets per priority</li>
+    </ul>
 
-    <section id="issue-panel" class="doc-section">
-      <h2>Issue panel</h2>
-      <p class="doc-lead">Per-issue SLA context inside Jira.</p>
-      <p>Open an issue that belongs to a <strong>tracked project</strong>, then use Jira’s issue view to open the AutoChase <strong>SLA Status</strong> issue panel (location depends on your Jira layout — often the right sidebar under app panels). </p>
-      <a href="images/issues_panel.png" target="_blank" rel="noopener noreferrer">
-        <img class="doc-img" src="images/issues_panel.png" alt="SLA Status issue panel — summary and actions" />
-      </a>
+    <h3>Five-step wizard</h3>
+    <ol>
+      <li><strong>SLA Timing</strong> — name, times, warning threshold, scope, SLA clock, working hours</li>
+      <li><strong>Acknowledgment reminders</strong> — up to 3 percentages of response time</li>
+      <li><strong>Progress reminders</strong> — up to 3 percentages of resolution time</li>
+      <li><strong>Leadership visibility levels</strong> — manager-chain thresholds</li>
+      <li><strong>Review &amp; submit</strong></li>
+    </ol>
 
-      <h3>What you see (summary)</h3>
-      <p>The left side of the panel is a read-only snapshot of how this issue lines up against the assigned SLA:</p>
-      <ul>
-        <li><strong>Status</strong> — Current SLA state (for example <strong>On track</strong>, <strong>At risk</strong>, or <strong>Breach</strong>), shown as a colored badge.</li>
-        <li><strong>Escalation level</strong> — How far leadership visibility has progressed for this issue (numeric level; higher means more senior visibility has been applied per your SLA rules).</li>
-        <li><strong>Acknowledgment</strong> — Whether the issue has been acknowledged for SLA purposes (for example <strong>Acknowledged</strong> or pending).</li>
-        <li><strong>Policy</strong> — The <strong>SLA rule name</strong> applied to this issue, plus how it was chosen (for example <em>Source: Auto policy match</em> when it came from project defaults / matching rules rather than a manual pick).</li>
-        <li><strong>Response SLA</strong> — Target response time and <strong>time left</strong> (or <code>0m left</code> when the response window is exhausted).</li>
-        <li><strong>Resolution SLA</strong> — Target resolution time and <strong>time left</strong> (or <code>0m left</code> when past due).</li>
-      </ul>
+    <h3>Key fields</h3>
+    <table>
+      <tr><th>Field</th><th>Purpose</th></tr>
+      <tr><td>Response / Resolution time</td><td>SLA targets</td></tr>
+      <tr><td>Warning threshold (%)</td><td>When status becomes At risk</td></tr>
+      <tr><td>Clock starts</td><td>Jira created, on status match, or on active sprint</td></tr>
+      <tr><td>Pause while status is…</td><td>Statuses that stop the SLA clock</td></tr>
+      <tr><td>Working time</td><td>Count SLA elapsed time only during business hours (see Working calendar)</td></tr>
+    </table>
 
-      <h3>Actions</h3>
-      <p>The right side is for quick updates on this issue:</p>
-      <ul>
-        <li><strong>Quick acknowledge</strong> — One-click acknowledgment when acknowledgment is still needed; if already captured, the panel shows that acknowledgment is recorded.</li>
-        <li><strong>Assign SLA</strong> — Choose which SLA rule applies to this issue from the dropdown, then click <strong>Save</strong> to apply. Use this when you need to override or set the SLA manually (subject to your org’s rules).</li>
-      </ul>
-      <p class="doc-note">If the panel says the issue is not tracked, add the project under <strong>Projects</strong> and sync or update the issue so AutoChase can pick it up.</p>
-    </section>
+    <h3>Status lifecycle</h3>
+    <p><strong>On track</strong> → <strong>At risk</strong> (warning %) → <strong>Breach</strong> (resolution exceeded)</p>
+  </section>
 
-    <section id="troubleshooting" class="doc-section">
-      <h2>Troubleshooting</h2>
-      <table>
-        <thead>
-          <tr><th>Problem</th><th>What to try</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Issue not tracked</td><td>Add the project in <strong>Projects</strong>, then create a new issue or run <strong>Sync issues</strong>.</td></tr>
-          <tr><td>No SLA assigned</td><td>Create an SLA that matches the project (or <code>*</code>), issue type, and priority; set a project default SLA where appropriate.</td></tr>
-          <tr><td>Panel shows “not tracked”</td><td>Only issues in added projects are tracked; the issue may pre-date the project being added — create/update or sync.</td></tr>
-          <tr><td>Escalation not working</td><td>Verify hierarchy upload, Jira ID resolution, and SLA leadership levels. Managers need resolvable Jira accounts (email / account ID).</td></tr>
-        </tbody>
-      </table>
-    </section>
+  <!-- WORKING CALENDAR -->
+  <section class="doc-section" id="working-calendar">
+    <h2>Working calendar</h2>
+    <p class="doc-lead">Configure when SLA time counts — business hours, weekends, short days, holidays, and timezone.</p>
+    <p>Configure working time in <strong>SLA rules → Create/Edit SLA → Step 1 → Working time</strong>.</p>
 
-    <section id="support" class="doc-section">
-      <h2>Support</h2>
-      <p>For questions or issues, contact <a href="mailto:info@opusleaf.com">info@opusleaf.com</a> or use your support channel.</p>
-      <p class="doc-muted"><em>AutoChase runs on Atlassian Forge. Data stays in your Jira site — no external app servers for your issue content.</em></p>
-    </section>
+    <h3>Enable business hours</h3>
+    <p>Check <strong>Count this SLA only during working hours</strong>. When enabled, SLA budgets (e.g. 16 hours) advance only during configured windows. Nights, unchecked days, and holidays do not count.</p>
 
-    <p class="doc-footer">AutoChase documentation — edit this file to match your Marketplace listing before publish.</p>
-  </div>
+    <h3>Timezone</h3>
+    <p>Searchable IANA timezone picker. Use <strong>Use my timezone</strong> for a quick start. All day/time rules apply in this timezone.</p>
+
+    <h3>Work days and hours</h3>
+    <h4>Same hours every day</h4>
+    <ul>
+      <li>Check Mon–Fri (default); <strong>uncheck Sat and Sun</strong> to exclude weekends</li>
+      <li>Set Start (e.g. 09:00) and End (e.g. 17:00)</li>
+    </ul>
+    <h4>Different hours per day</h4>
+    <p>Enable <strong>Set different hours for each day</strong>. Example: Mon–Thu 09:00–17:00, <strong>Friday 09:00–13:00</strong> (half day).</p>
+
+    <h3>Holidays</h3>
+    <ul>
+      <li>Enter dates as <code>YYYY-MM-DD</code> (one per line)</li>
+      <li>Upload CSV, TSV, or Excel (.xlsx)</li>
+      <li>Use presets: US federal, UK bank, India public, EU common, APAC mix (2026)</li>
+      <li>Download template for bulk import</li>
+    </ul>
+
+    <div class="doc-note">Example: Mon–Fri 09:00–17:00, Friday 09:00–13:00, Sat/Sun off, plus regional holiday list — a 16-hour SLA counts only business minutes in that calendar.</div>
+  </section>
+
+  <!-- DEPARTMENTS, TEAMS, HIERARCHY - condensed from original -->
+  <section class="doc-section" id="departments">
+    <h2>Departments</h2>
+    <p class="doc-lead">Organizational buckets for analytics and escalation context.</p>
+    <p>Add departments with Name and optional Description. Used by SLA analytics rollups and org structure. Create departments before teams when possible.</p>
+  </section>
+
+  <section class="doc-section" id="teams">
+    <h2>Teams</h2>
+    <p class="doc-lead">Group projects under departments.</p>
+    <p>Add teams linked to a department. Assign projects to teams from the Projects tab. Supports analytics filters and report team selection.</p>
+  </section>
+
+  <section class="doc-section" id="escalation-hierarchy">
+    <h2>Escalation hierarchy</h2>
+    <p class="doc-lead">Upload org structure for manager-chain leadership visibility.</p>
+    <ol>
+      <li>Download template (columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>)</li>
+      <li>Import CSV, TSV, or Excel</li>
+      <li>Click <strong>Resolve Jira IDs</strong> to link emails to Jira accounts</li>
+      <li>Verify in the table; use Add employee for manual edits</li>
+    </ol>
+    <p>Leadership visibility levels in SLA rules walk the manager chain from the assignee using this hierarchy.</p>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="doc-section" id="how-it-works">
+    <h2>How it works</h2>
+    <p class="doc-lead">End-to-end flow once projects, SLAs, and capacity are configured.</p>
+    <ol>
+      <li><strong>Tracking</strong> — New issues in enabled projects are tracked (via webhook and sync)</li>
+      <li><strong>SLA assignment</strong> — From project default and SLA matching rules</li>
+      <li><strong>SLA clock</strong> — Runs during working hours if configured; pauses on selected statuses</li>
+      <li><strong>Status</strong> — on_track → at_risk → breach</li>
+      <li><strong>Reminders</strong> — Acknowledgment and progress comments at configured thresholds</li>
+      <li><strong>Leadership visibility</strong> — Escalation levels via hierarchy on scheduled checks</li>
+      <li><strong>Capacity</strong> — Workload computed from open issues; compared to weekly hours and SLA time remaining</li>
+      <li><strong>Resolution</strong> — Tracking stops when issue reaches done/resolved</li>
+    </ol>
+  </section>
+
+  <!-- ISSUE PANEL -->
+  <section class="doc-section" id="issue-panel">
+    <h2>Issue panel</h2>
+    <p class="doc-lead">Per-issue SLA and capacity context inside Jira.</p>
+    <p>Open a tracked issue and select the <strong>SLA Status</strong> panel.</p>
+    <h3>SLA snapshot</h3>
+    <ul>
+      <li>Status (On track / At risk / Breach)</li>
+      <li>Escalation level, Acknowledgment state</li>
+      <li>Applied SLA policy and source (auto match vs manual)</li>
+      <li>Response and resolution time remaining</li>
+      <li>Live SLA progress with business-hours awareness</li>
+    </ul>
+    <h3>Capacity snapshot</h3>
+    <p>Assignee workload, weekly capacity, utilization, and whether workload exceeds SLA resolution time left.</p>
+    <h3>Actions</h3>
+    <p><strong>Quick acknowledge</strong> and <strong>Assign SLA</strong> from the panel.</p>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="doc-section" id="troubleshooting">
+    <h2>Troubleshooting</h2>
+    <table>
+      <tr><th>Problem</th><th>What to try</th></tr>
+      <tr><td>Issue not tracked</td><td>Add project in Projects; create issue or Sync issues</td></tr>
+      <tr><td>No SLA assigned</td><td>Create matching SLA; set project default SLA</td></tr>
+      <tr><td>Escalation not working</td><td>Upload hierarchy; Resolve Jira IDs; check SLA leadership levels</td></tr>
+      <tr><td>Capacity report empty</td><td>Add projects; enable capacity; Save settings; Refresh</td></tr>
+      <tr><td>Wrong workload numbers</td><td>Check demand mode, story points field, hours/point; ensure estimates exist in Jira</td></tr>
+      <tr><td>SLA seems slow/fast</td><td>Review working hours, holidays, timezone, and pause statuses on the SLA</td></tr>
+      <tr><td>Analytics mismatch</td><td>Ensure department, team, and hierarchy are configured; filters apply to both summary and list</td></tr>
+    </table>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="doc-section" id="support">
+    <h2>Support</h2>
+    <p>For questions or issues, contact <a href="mailto:info@opusleaf.com">info@opusleaf.com</a> or your support channel.</p>
+    <p>AutoChase runs on Atlassian Forge. Data stays in your Jira site.</p>
+  </section>
+
+  <footer class="doc-footer">
+    AutoChase documentation — SLA tracking, escalations, and capacity planning for Jira Cloud.
+  </footer>
+
+</div>
 </body>
 </html>
