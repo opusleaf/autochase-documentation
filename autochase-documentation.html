@@ -116,6 +116,20 @@
       background: #fafbfc;
     }
     .doc-kpi strong { display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .doc-subnav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .doc-subnav span {
+      background: var(--accent-soft);
+      color: #0747a6;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
     .doc-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); text-align: center; }
   </style>
 </head>
@@ -133,15 +147,12 @@
       <li><a href="#getting-started">Getting started</a></li>
       <li><a href="#dashboard">Dashboard</a></li>
       <li><a href="#tracked-issues">Tracked issues</a></li>
-      <li><a href="#sla-analytics">SLA analytics</a></li>
       <li><a href="#reports">Reports</a></li>
       <li><a href="#capacity">Capacity planning</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#sla-rules">SLA rules</a></li>
       <li><a href="#working-calendar">Working calendar</a></li>
-      <li><a href="#departments">Departments</a></li>
-      <li><a href="#teams">Teams</a></li>
-      <li><a href="#escalation-hierarchy">Escalation hierarchy</a></li>
+      <li><a href="#organisation">Organisation</a></li>
       <li><a href="#how-it-works">How it works</a></li>
       <li><a href="#issue-panel">Issue panel</a></li>
       <li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -152,23 +163,24 @@
   <!-- GETTING STARTED -->
   <section class="doc-section" id="getting-started">
     <h2>Getting started</h2>
-    <p class="doc-lead">Install AutoChase, connect your Jira projects, define SLAs, and configure team capacity alongside your escalation structure.</p>
+    <p class="doc-lead">Install AutoChase, connect your Jira projects, define SLAs, configure organisation structure, and set up capacity planning.</p>
     <ol>
       <li>Install AutoChase from the Atlassian Marketplace.</li>
       <li>Open Jira → <strong>Apps → AutoChase</strong> (or Manage apps → AutoChase).</li>
       <li>Add <strong>Projects</strong> from Jira and assign default SLAs and teams.</li>
       <li>Create <strong>SLA rules</strong> with response/resolution times, reminders, leadership visibility, and working hours.</li>
-      <li>Open <strong>Capacity</strong>, configure demand settings and scope, then refresh the capacity report.</li>
-      <li>For department/team analytics and manager-chain escalations, configure <strong>Departments</strong>, <strong>Teams</strong>, and <strong>Escalation hierarchy</strong>.</li>
+      <li>Open <strong>Organisation</strong> and add at least one <strong>department</strong>, <strong>team</strong>, and <strong>escalation hierarchy</strong> record.</li>
+      <li>Open <strong>Capacity planning → Setup</strong> (gear icon). Configure estimate source, default hours, and story points if needed → <strong>Save settings</strong>.</li>
+      <li>Use <strong>Capacity planning → Availability</strong> for leave, recurring meetings, and per-person overrides.</li>
+      <li>Review <strong>Sprint commitment</strong> and <strong>Backlog pressure</strong> to see workload vs capacity.</li>
     </ol>
-    <p><strong>Navigation order in the app:</strong> Dashboard · Tracked issues · SLA analytics · Reports · Capacity · Projects · SLA rules · Teams · Departments · Escalation hierarchy</p>
+    <p><strong>Navigation in the app:</strong> Dashboard · Tracked issues · Reports · Capacity planning · Projects · SLA rules · Organisation</p>
     <div class="doc-note">
-      For full SLA analytics rollups and team reports, add at least one department, one team, and escalation hierarchy data. A setup reminder appears on Dashboard and Reports until this is complete.
+      A setup reminder appears on Dashboard and Reports until department, team, and escalation hierarchy are configured. Team reports and manager-chain escalations require this org data.
     </div>
-    <!-- Screenshot: Admin home with navigation -->
     <img
       src="https://raw.githubusercontent.com/opusleaf/autochase-documentation/main/images/Dashboard.png"
-      alt="AutoChase admin — navigation, KPIs, and issues needing attention"
+      alt="AutoChase admin — navigation, KPIs, and issues at risk of breach"
       class="doc-img"
     />
   </section>
@@ -176,131 +188,180 @@
   <!-- DASHBOARD -->
   <section class="doc-section" id="dashboard">
     <h2>Dashboard</h2>
-    <p class="doc-lead">High-level SLA health across your tracked projects and issues.</p>
+    <p class="doc-lead">High-level SLA health and capacity snapshot across tracked projects.</p>
     <h3>KPI cards</h3>
     <div class="doc-kpi-grid">
       <div class="doc-kpi"><strong>Active projects</strong> Projects added in AutoChase. Click to open Projects.</div>
       <div class="doc-kpi"><strong>Active SLAs</strong> SLA definitions. Click to open SLA rules.</div>
-      <div class="doc-kpi"><strong>On track</strong> Open issues within SLA limits.</div>
-      <div class="doc-kpi"><strong>At risk</strong> Issues past the warning threshold.</div>
-      <div class="doc-kpi"><strong>Breached</strong> Issues past resolution SLA. Click to filter tracked issues.</div>
+      <div class="doc-kpi"><strong>On track</strong> Open issues within SLA limits. Click to filter Tracked issues.</div>
+      <div class="doc-kpi"><strong>At risk</strong> Issues past the warning threshold. Click to filter.</div>
+      <div class="doc-kpi"><strong>Breached</strong> Issues past resolution SLA. Click to filter.</div>
     </div>
-    <h3>Issues needing attention</h3>
-    <p>Open issues sorted by urgency. Columns include Issue, Assignee, SLA, Mode, SLA progress, Status, Acknowledgment, and Escalation level.</p>
+    <p>When capacity data is available, additional KPIs show team utilization and overload counts.</p>
+    <h3>Project filter</h3>
+    <p>Use the global project filter at the top to narrow dashboard metrics to selected projects.</p>
+    <h3>Issues at risk of breach</h3>
+    <p>At-risk and breached <strong>open</strong> issues, sorted by urgency. Columns include Issue, Project, Organisation, Assignee, SLA, SLA progress, and Reminders &amp; escalation.</p>
     <h3>Top breached projects</h3>
-    <p>Up to five projects with the most breaches. Use <strong>View</strong> to jump to tracked issues for that project.</p>
+    <p>Up to five projects with the most breaches in the current filter scope. Use <strong>View</strong> to jump to Tracked issues filtered by that project.</p>
   </section>
 
   <!-- TRACKED ISSUES -->
   <section class="doc-section" id="tracked-issues">
     <h2>Tracked issues</h2>
-    <p class="doc-lead">Live monitoring with reminders, escalation, and SLA assignment controls.</p>
-    <h3>Filters</h3>
-    <p>Filter by status: All, On track, At risk, Breached, Resolved. You can also filter by SLA tracking on/off.</p>
-    <h3>Table</h3>
-    <p>Columns include Track (on/off), Issue, Assignee, SLA, Mode, Priority, SLA progress, Status, Acknowledgment, and Escalation. Uncheck <strong>Track</strong> to pause SLA enforcement on an issue, or click an SLA name to reassign policy.</p>
-    <p class="doc-muted">If empty, add a project under Projects and create or sync issues in Jira.</p>
-  </section>
-
-  <!-- SLA ANALYTICS -->
-  <section class="doc-section" id="sla-analytics">
-    <h2>SLA analytics</h2>
-    <p class="doc-lead">Department and SLA rollups with a filterable issue list and CSV export.</p>
+    <p class="doc-lead">Live SLA monitoring with reminders, escalation, and per-issue controls.</p>
     <h3>Filters</h3>
     <ul>
-      <li>Department, Team, Project, SLA, Status</li>
-      <li><strong>Export CSV</strong> for the current filter context</li>
+      <li><strong>Status:</strong> All, On track, At risk, Breached, Resolved</li>
+      <li><strong>SLA tracking:</strong> All SLA, SLA on, SLA off</li>
+      <li><strong>Project filter</strong> — limit to selected AutoChase projects</li>
+      <li><strong>Search</strong> — issue key, summary, project, assignee, department, team</li>
     </ul>
-    <h3>Summary rollups</h3>
-    <p>Switch between <strong>By department &amp; team</strong> and <strong>By SLA</strong>. Click a row to filter the issue list below. Status counts and % met apply to resolved tickets in the filtered set.</p>
-    <h3>Issue list</h3>
-    <p>Columns: Issue, Org (department/team), Project, Priority, SLA, Status, Escalation, Acknowledgment.</p>
-    <div class="doc-note">Summary rollups and the issue list use the same filters, so counts always match the table below.</div>
+    <h3>Table</h3>
+    <table>
+      <tr><th>Column</th><th>Description</th></tr>
+      <tr><td>Track</td><td>Toggle SLA enforcement on/off for this issue</td></tr>
+      <tr><td>Issue</td><td>Jira issue link and summary</td></tr>
+      <tr><td>Project</td><td>Project key and name</td></tr>
+      <tr><td>Organisation</td><td>Department / team</td></tr>
+      <tr><td>Assignee</td><td>Current assignee</td></tr>
+      <tr><td>SLA</td><td>Applied policy — click to reassign</td></tr>
+      <tr><td>Priority</td><td>Jira priority</td></tr>
+      <tr><td>SLA progress</td><td>Live progress with business-hours awareness</td></tr>
+      <tr><td>Reminders &amp; escalation</td><td>Ack/progress reminders sent, escalation level</td></tr>
+    </table>
+    <p class="doc-muted"><strong>Sync issues</strong> (Projects tab) assigns the project default SLA only. Use <strong>Track</strong> to pause enforcement without removing the issue from the list.</p>
   </section>
 
   <!-- REPORTS -->
   <section class="doc-section" id="reports">
     <h2>Reports</h2>
-    <p class="doc-lead">Shareable SLA summaries for teams and leadership, with integrated capacity insights.</p>
+    <p class="doc-lead">Shareable SLA summaries for teams and leadership. <strong>All report types include SLA metrics.</strong> Capacity is optional for Leadership and Full reports only.</p>
     <h3>Report types</h3>
     <table>
       <tr><th>Type</th><th>Contents</th></tr>
-      <tr><td>Team SLA health</td><td>SLA metrics for a selected team or all teams</td></tr>
-      <tr><td>Leadership digest</td><td>Executive summary with SLA health and capacity snapshot</td></tr>
-      <tr><td>Full report</td><td>Complete SLA and capacity view for leadership reviews</td></tr>
+      <tr><td>Team SLA health</td><td>Operational SLA metrics for a selected team or all teams</td></tr>
+      <tr><td>At-risk &amp; breaches</td><td>Open issues at risk or in breach only</td></tr>
+      <tr><td>Project SLA rollup</td><td>Per-project SLA summary and breach counts</td></tr>
+      <tr><td>Leadership digest</td><td>Executive summary with optional capacity snapshot</td></tr>
+      <tr><td>Full report</td><td>Complete SLA view plus optional capacity section</td></tr>
     </table>
     <h3>Options</h3>
     <ul>
-      <li>Filter by team and optional date range</li>
-      <li>Include SLA section and capacity section (Leadership and Full reports)</li>
-      <li><strong>Generate report</strong>, then copy for Confluence, export JSON/CSV, or Print / PDF</li>
+      <li><strong>Team</strong> — limit to one team or all teams</li>
+      <li><strong>From / To</strong> — optional date range for SLA tickets (leave empty for full history)</li>
+      <li><strong>Output</strong> — Preview on screen, Export CSV, or Save as PDF (via print dialog)</li>
+      <li><strong>Include capacity</strong> — checkbox for Leadership digest and Full report only; adds a capacity snapshot at generation time</li>
     </ul>
-    <p>Date range filters SLA tickets (resolved in window, or still open and created before end date). Capacity shows current workload at generation time.</p>
+    <p>Click <strong>Generate</strong> to build the report. Preview appears below; CSV downloads; PDF opens the browser print dialog.</p>
+    <div class="doc-note">
+      <strong>Date range:</strong> Resolved tickets must fall in the window; open tickets must have been created on or before the end date. The report footer shows the selected period, generation time, and calendar/timezone notes. Status counts and % met apply to resolved tickets in the filtered set.
+    </div>
   </section>
 
   <!-- CAPACITY -->
   <section class="doc-section" id="capacity">
     <h2>Capacity planning</h2>
-    <p class="doc-lead">See open Jira work against each person’s weekly capacity. AutoChase combines SLA deadlines with workload so you can spot overload before breach.</p>
+    <p class="doc-lead">See open Jira work against each person’s capacity. AutoChase combines SLA deadlines with workload so you can spot overload before breach.</p>
 
-    <h3>What capacity planning shows</h3>
+    <p>Capacity planning uses six sections (sub-tabs):</p>
+    <div class="doc-subnav" aria-label="Capacity sub-tabs">
+      <span>Sprint commitment</span>
+      <span>Backlog pressure</span>
+      <span>Reports</span>
+      <span>Velocity</span>
+      <span>Availability</span>
+      <span>Setup</span>
+    </div>
+
+    <h3>Sprint commitment</h3>
+    <p>Plan a specific Jira sprint: compare <strong>demand</strong> (assigned work in the sprint) to <strong>supply</strong> (available hours after meetings, leave, and focus factor).</p>
+    <table>
+      <tr><th>Filter</th><th>Description</th></tr>
+      <tr><td>Board</td><td>Jira Scrum/Kanban board — sprint dates and sprint-scoped work come from this board</td></tr>
+      <tr><td>Sprint</td><td>Active sprint or a specific sprint from the board</td></tr>
+      <tr><td>View by</td><td><strong>Person</strong> (capacity and overload per assignee) or <strong>Project</strong> (workload rollup)</td></tr>
+      <tr><td>Search</td><td>Filter rows by person or project name</td></tr>
+    </table>
+    <p><strong>Summary KPIs:</strong> Demand (h), Supply (h), Utilization %, Gap (h), Overloaded count.</p>
+    <p>Positive <strong>gap</strong> means more work is assigned than the team can deliver in the sprint window. Sprint commitment is <strong>board-scoped</strong> — pick the board that matches how your team plans sprints.</p>
+
+    <h3>Backlog pressure</h3>
+    <p>Open workload vs <strong>weekly</strong> capacity (not sprint-length). Use this for ongoing backlog health.</p>
+    <table>
+      <tr><th>Metric</th><th>Meaning</th></tr>
+      <tr><td>Workload (h)</td><td>Open demand from assigned issues</td></tr>
+      <tr><td>Capacity (h/wk)</td><td>Available hours per week</td></tr>
+      <tr><td>Utilization %</td><td>Workload ÷ capacity</td></tr>
+      <tr><td>Backlog (wk)</td><td>Weeks of work at current capacity</td></tr>
+      <tr><td>Gap (h)</td><td>Hours above available capacity</td></tr>
+      <tr><td>Band</td><td>OK (&lt;85%), High (85–100%), Overload (&gt;100%)</td></tr>
+    </table>
+    <p>Filters: projects, group by (person or project), time window (All open, Sprint, Outside active sprint, Updated this month/year), utilization band, and search. Per overloaded person, use <strong>Set Xh/wk</strong> to apply a recommended weekly hours override.</p>
+
+    <h3>Capacity Reports (sub-tab)</h3>
+    <p>On-demand exports for planning meetings — distinct from the main <strong>Reports</strong> tab (SLA-focused).</p>
+    <table>
+      <tr><th>Type</th><th>Use for</th></tr>
+      <tr><td>Backlog pressure</td><td>Detailed backlog export with person or project grouping</td></tr>
+      <tr><td>Overload radar</td><td>Focus on overloaded assignees</td></tr>
+      <tr><td>Sprint commitment</td><td>Export sprint plan data</td></tr>
+      <tr><td>Multi-sprint comparison</td><td>Compare demand/supply across several sprints</td></tr>
+    </table>
+    <p>Generate on screen, then <strong>Export CSV</strong> or <strong>Export Excel</strong> (.xlsx with formatted matrix).</p>
+
+    <h3>Velocity</h3>
+    <p>Throughput trends from <strong>closed sprints</strong> on a Jira board. Use for forecasting and comparing team members.</p>
     <ul>
-      <li><strong>Workload (h)</strong> — open demand from assigned issues</li>
-      <li><strong>Capacity (h/wk)</strong> — available hours per week (default or per-user override)</li>
-      <li><strong>Utilization %</strong> — workload ÷ capacity</li>
-      <li><strong>Backlog (wk)</strong> — how many weeks of work at current capacity</li>
-      <li><strong>Delta (h)</strong> — hours needed above available capacity</li>
-      <li><strong>Bands</strong> — OK (&lt;85%), High (85–100%), Overload (&gt;100%)</li>
+      <li><strong>Board</strong> — velocity is read from closed sprints on this board</li>
+      <li><strong>Sprints</strong> — recent closed (last 3/6/9/12) or pick specific closed sprints</li>
+      <li><strong>Chart</strong> — hours or story points</li>
+      <li><strong>Compare people</strong> — optional overlay lines on the trend chart</li>
+    </ul>
+    <p>Click <strong>Apply</strong> after changing filters. Charts show team throughput; tables show per-person velocity summary and sprint-by-sprint breakdown. An upcoming sprint forecast uses historical velocity when board data is available.</p>
+
+    <h3>Availability</h3>
+    <ul>
+      <li><strong>Leave</strong> — personal leave periods reduce sprint supply</li>
+      <li><strong>Recurring meetings</strong> — templates and per-person meeting blocks</li>
+      <li><strong>Person overrides</strong> — custom weekly capacity or meeting hours for one person</li>
+      <li><strong>Focus factor</strong> — team-wide share of capacity for focused sprint work (configured in Setup)</li>
     </ul>
 
-    <h3>Capacity report (main view)</h3>
-    <p>The report appears at the top of the Capacity tab. Use the toolbar to:</p>
-    <ul>
-      <li>Search by team member or project</li>
-      <li>Group <strong>By user</strong> or <strong>By project</strong></li>
-      <li>Filter by time window: All open, Sprint, Updated this month/year</li>
-      <li>Filter by utilization band; include unassigned pool</li>
-      <li><strong>Refresh</strong> and <strong>Export CSV</strong></li>
-    </ul>
-    <p>Per overloaded user, use <strong>Set Xh/wk</strong> to apply a recommended weekly hours override based on your target utilization.</p>
-
-    <h3>Settings (collapsible section)</h3>
+    <h3>Setup (gear icon)</h3>
+    <p>One-time team defaults for capacity math. Change rarely — use <strong>Availability</strong> for day-to-day leave and meetings.</p>
     <table>
       <tr><th>Setting</th><th>Description</th></tr>
-      <tr><td>Enable capacity planning</td><td>Master switch for capacity reporting and issue-panel workload. Save settings after changing.</td></tr>
-      <tr><td>Scope mode</td><td><strong>Selected projects</strong> (AutoChase project list) or <strong>Kanban/Scrum board</strong></td></tr>
+      <tr><td>Enable capacity planning</td><td>Master switch for capacity reporting and issue-panel workload</td></tr>
+      <tr><td>Estimate from</td><td>Remaining estimate, Original estimate, or Story points</td></tr>
+      <tr><td>Minutes if missing</td><td>Fallback when an issue has no estimate (0 = exclude from demand)</td></tr>
+      <tr><td>Per-project estimate source</td><td>Override default demand mode per project</td></tr>
+      <tr><td>Story points field</td><td>Jira custom field; use <strong>Auto-detect</strong></td></tr>
+      <tr><td>Hours / point</td><td>Converts story points to hours</td></tr>
       <tr><td>Default hours / week</td><td>Baseline capacity per person (e.g. 40)</td></tr>
-      <tr><td>Demand from</td><td>Remaining estimate, Original estimate, or Story points</td></tr>
-      <tr><td>Story points field</td><td>Jira custom field for story points; use <strong>Auto-detect</strong> to find it</td></tr>
-      <tr><td>Hours per story point</td><td>Converts story points to hours for workload (org-wide admin setting)</td></tr>
-      <tr><td>All project members</td><td>Include full project roster, not only assignees with open tickets</td></tr>
-      <tr><td>Per-user override</td><td>Set custom hours/week for a specific Jira user</td></tr>
+      <tr><td>Default meeting hours / week</td><td>Simple weekly meeting load when detailed meetings are off</td></tr>
+      <tr><td>Focus factor</td><td>Share of capacity for focused work (e.g. 0.85 = 85%)</td></tr>
+      <tr><td>Target util %</td><td>Used by auto-balance recommendations</td></tr>
+      <tr><td>Include all project members</td><td>Show full project roster, not only assignees with open tickets</td></tr>
     </table>
-
-    <h3>Planning &amp; trends (collapsible section)</h3>
-    <ul>
-      <li>Set <strong>Target util %</strong> and run <strong>Auto-balance overload</strong> for overloaded assignees</li>
-      <li>View capacity <strong>trend</strong> by day, week, or month (last 30–365 days)</li>
-      <li>Export trend data to CSV</li>
-    </ul>
+    <p>Click <strong>Save settings</strong> after changes, then <strong>Refresh</strong> on the relevant capacity tab.</p>
 
     <h3>How demand is calculated</h3>
-    <p>AutoChase sums open issue demand per assignee:</p>
     <ol>
       <li>Uses <strong>Remaining estimate</strong> (or Original estimate / Story points per your setting)</li>
-      <li>If time estimate is missing, falls back to <strong>story points × hours/point</strong> when configured</li>
+      <li>Per-project overrides apply when configured</li>
+      <li>If time estimate is missing, uses <strong>minutes if missing</strong> or story points × hours/point</li>
       <li>Unassigned issues can appear in a separate unassigned pool</li>
     </ol>
 
     <h3>Capacity on the issue panel</h3>
-    <p>When capacity planning is enabled, the issue side panel shows assignee workload vs. SLA resolution time remaining. This helps identify <strong>capacity at risk</strong> — when backlog exceeds time left before SLA breach.</p>
+    <p>When capacity planning is enabled, the issue side panel shows assignee workload vs SLA resolution time remaining — <strong>capacity at risk</strong> when backlog exceeds time left before breach.</p>
 
-    <div class="doc-note">Add at least one project under Projects before running a capacity report. Configure story points field if your team uses points instead of time estimates.</div>
-    <!-- Screenshot: Capacity report -->
+    <div class="doc-note">Add at least one project under Projects before running capacity reports. Configure story points field if your team uses points instead of time estimates.</div>
     <img
-    src="https://raw.githubusercontent.com/opusleaf/autochase-documentation/main/images/Capacity_Planning.png"
-    alt="Capacity planning — workload, utilization, and team capacity"
-    class="doc-img"
+      src="https://raw.githubusercontent.com/opusleaf/autochase-documentation/main/images/Capacity_Planning.png"
+      alt="Capacity planning — sprint commitment, backlog pressure, velocity, and availability"
+      class="doc-img"
     />
   </section>
 
@@ -315,9 +376,15 @@
       <li><strong>Load projects</strong> — populate dropdown from Jira</li>
       <li><strong>Owner email</strong> (required) — used for escalation when tickets are unassigned</li>
     </ul>
+    <h3>Per-project configuration</h3>
+    <ul>
+      <li><strong>Issue types to track</strong> — limit which types are imported</li>
+      <li><strong>Default SLA</strong> — applied on sync for new issues</li>
+      <li><strong>Team</strong> — links project to organisation structure for reports and escalation</li>
+    </ul>
     <h3>Project actions</h3>
-    <p>Edit, Assign SLA, Assign team, or Remove. Default SLA applies to new issues (subject to matching rules). Team links support org analytics and structure.</p>
-    <p class="doc-muted">Use the <strong>Capacity</strong> tab for workload planning; use <strong>Reports</strong> for shareable SLA + capacity summaries.</p>
+    <p>Edit, Assign SLA, Assign team, or Remove.</p>
+    <p class="doc-muted">Use <strong>Capacity planning</strong> for workload and sprint planning; use <strong>Reports</strong> for shareable SLA summaries.</p>
   </section>
 
   <!-- SLA RULES -->
@@ -386,27 +453,29 @@
     <div class="doc-note">Example: Mon–Fri 09:00–17:00, Friday 09:00–13:00, Sat/Sun off, plus regional holiday list — a 16-hour SLA counts only business minutes in that calendar.</div>
   </section>
 
-  <!-- DEPARTMENTS, TEAMS, HIERARCHY - condensed from original -->
-  <section class="doc-section" id="departments">
-    <h2>Departments</h2>
-    <p class="doc-lead">Organizational buckets for analytics and escalation context.</p>
-    <p>Add departments with Name and optional Description. Used by SLA analytics rollups and org structure. Create departments before teams when possible.</p>
-  </section>
+  <!-- ORGANISATION -->
+  <section class="doc-section" id="organisation">
+    <h2>Organisation</h2>
+    <p class="doc-lead">Departments, teams, and escalation hierarchy in one place.</p>
+    <div class="doc-subnav" aria-label="Organisation sub-tabs">
+      <span>Departments</span>
+      <span>Teams</span>
+      <span>Escalation hierarchy</span>
+    </div>
 
-  <section class="doc-section" id="teams">
-    <h2>Teams</h2>
-    <p class="doc-lead">Group projects under departments.</p>
-    <p>Add teams linked to a department. Assign projects to teams from the Projects tab. Supports analytics filters and report team selection.</p>
-  </section>
+    <h3>Departments</h3>
+    <p>Organizational buckets for analytics and escalation context. Add name and optional description. Create departments before teams.</p>
 
-  <section class="doc-section" id="escalation-hierarchy">
-    <h2>Escalation hierarchy</h2>
-    <p class="doc-lead">Upload org structure for manager-chain leadership visibility.</p>
+    <h3>Teams</h3>
+    <p>Group people and projects under a department. Assign teams to projects from the <strong>Projects</strong> tab. Used by Reports team filter and org columns on issues.</p>
+
+    <h3>Escalation hierarchy</h3>
+    <p>Upload org structure for manager-chain leadership visibility.</p>
     <ol>
       <li>Download template (columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>)</li>
-      <li>Import CSV, TSV, or Excel</li>
+      <li>Import CSV, TSV, or Excel (.xlsx)</li>
       <li>Click <strong>Resolve Jira IDs</strong> to link emails to Jira accounts</li>
-      <li>Verify in the table; use Add employee for manual edits</li>
+      <li>Verify in the table; use <strong>Add employee</strong> for manual edits</li>
     </ol>
     <p>Leadership visibility levels in SLA rules walk the manager chain from the assignee using this hierarchy.</p>
   </section>
@@ -414,15 +483,15 @@
   <!-- HOW IT WORKS -->
   <section class="doc-section" id="how-it-works">
     <h2>How it works</h2>
-    <p class="doc-lead">End-to-end flow once projects, SLAs, and capacity are configured.</p>
+    <p class="doc-lead">End-to-end flow once projects, SLAs, organisation, and capacity are configured.</p>
     <ol>
       <li><strong>Tracking</strong> — New issues in enabled projects are tracked (via webhook and sync)</li>
-      <li><strong>SLA assignment</strong> — From project default and SLA matching rules</li>
+      <li><strong>SLA assignment</strong> — From project default and SLA matching rules; manual override per issue</li>
       <li><strong>SLA clock</strong> — Runs during working hours if configured; pauses on selected statuses</li>
       <li><strong>Status</strong> — on_track → at_risk → breach</li>
       <li><strong>Reminders</strong> — Acknowledgment and progress comments at configured thresholds</li>
       <li><strong>Leadership visibility</strong> — Escalation levels via hierarchy on scheduled checks</li>
-      <li><strong>Capacity</strong> — Workload computed from open issues; compared to weekly hours and SLA time remaining</li>
+      <li><strong>Capacity</strong> — Workload from open issues; compared to weekly hours, sprint supply, and SLA time remaining</li>
       <li><strong>Resolution</strong> — Tracking stops when issue reaches done/resolved</li>
     </ol>
   </section>
@@ -454,17 +523,21 @@
       <tr><td>Issue not tracked</td><td>Add project in Projects; create issue or Sync issues</td></tr>
       <tr><td>No SLA assigned</td><td>Create matching SLA; set project default SLA</td></tr>
       <tr><td>Escalation not working</td><td>Upload hierarchy; Resolve Jira IDs; check SLA leadership levels</td></tr>
-      <tr><td>Capacity report empty</td><td>Add projects; enable capacity; Save settings; Refresh</td></tr>
-      <tr><td>Wrong workload numbers</td><td>Check demand mode, story points field, hours/point; ensure estimates exist in Jira</td></tr>
+      <tr><td>Team report incomplete</td><td>Add department, team, and hierarchy under Organisation</td></tr>
+      <tr><td>Capacity tab empty</td><td>Add projects; enable capacity in Setup; Save settings; Refresh</td></tr>
+      <tr><td>Sprint commitment empty</td><td>Select a board and sprint; ensure issues are in that sprint</td></tr>
+      <tr><td>Wrong workload numbers</td><td>Check estimate source, story points field, hours/point; ensure estimates exist in Jira</td></tr>
+      <tr><td>Velocity shows no data</td><td>Select board with closed sprints; click Apply</td></tr>
       <tr><td>SLA seems slow/fast</td><td>Review working hours, holidays, timezone, and pause statuses on the SLA</td></tr>
-      <tr><td>Analytics mismatch</td><td>Ensure department, team, and hierarchy are configured; filters apply to both summary and list</td></tr>
+      <tr><td>Report date range wrong</td><td>Check From/To dates; empty = full history</td></tr>
+      <tr><td>New scopes after deploy</td><td><code>forge install --upgrade -e &lt;environment&gt;</code></td></tr>
     </table>
   </section>
 
   <!-- SUPPORT -->
   <section class="doc-section" id="support">
     <h2>Support</h2>
-    <p>For questions or issues, contact <a href="mailto:support@opusleaf.com">support@opusleaf.com</a> or your support channel.</p>
+    <p>For questions or issues, visit <a href="https://www.opusleaf.com">opusleaf.com</a> or email <a href="mailto:support@opusleaf.com">support@opusleaf.com</a>.</p>
     <p>AutoChase runs on Atlassian Forge. Data stays in your Jira site.</p>
   </section>
 
