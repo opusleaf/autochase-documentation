@@ -4,547 +4,1110 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AutoChase — Product documentation</title>
+  <meta name="description" content="AutoChase for Jira Cloud: SLA tracking, reminders, escalations, and capacity planning. Clear setup and feature guide." />
   <style>
     :root {
-      --bg: #f7f8fa;
+      --bg: #f0f3f8;
       --surface: #ffffff;
       --text: #172b4d;
       --muted: #5e6c84;
       --border: #dfe1e6;
       --accent: #0052cc;
+      --accent-deep: #0747a6;
       --accent-soft: #deebff;
-      --radius: 10px;
-      --shadow: 0 1px 2px rgba(9, 30, 66, 0.08), 0 4px 12px rgba(9, 30, 66, 0.06);
-      --max: 880px;
+      --sla: #0052cc;
+      --sla-soft: #deebff;
+      --cap: #00875a;
+      --cap-soft: #e3fcef;
+      --warn: #ff8b00;
+      --warn-soft: #fff7e6;
+      --radius: 12px;
+      --shadow: 0 1px 2px rgba(9, 30, 66, 0.06), 0 8px 24px rgba(9, 30, 66, 0.06);
+      --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      font-family: var(--font);
       line-height: 1.65;
       color: var(--text);
-      background: var(--bg);
+      background:
+        radial-gradient(1200px 480px at 10% -10%, #d6e6ff 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #d9f3e8 0%, transparent 50%),
+        var(--bg);
     }
-    .doc-wrap { max-width: var(--max); margin: 0 auto; padding: 32px 20px 64px; }
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-deep); }
+
+    .doc-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 72px;
+      display: grid;
+      gap: 28px;
+    }
+    @media (min-width: 980px) {
+      .doc-shell {
+        grid-template-columns: 240px minmax(0, 1fr);
+        align-items: start;
+      }
+    }
+
     .doc-hero {
-      background: linear-gradient(135deg, #0747a6 0%, #0052cc 45%, #2684ff 100%);
+      grid-column: 1 / -1;
+      background: linear-gradient(130deg, #05368a 0%, #0052cc 48%, #2684ff 100%);
       color: #fff;
-      border-radius: var(--radius);
-      padding: 28px 28px 24px;
-      margin-bottom: 28px;
+      border-radius: 16px;
+      padding: clamp(24px, 4vw, 40px);
       box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
-    .doc-hero h1 { margin: 0 0 8px; font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
-    .doc-hero p { margin: 0; opacity: 0.95; font-size: 1.05rem; max-width: 58ch; }
-    .doc-toc {
+    .doc-hero::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .doc-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+    .doc-hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.35rem);
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .doc-hero p {
+      margin: 0;
+      max-width: 62ch;
+      font-size: 1.05rem;
+      opacity: 0.95;
+    }
+    .doc-hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .doc-hero-pills span {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .doc-nav {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px 22px;
-      margin-bottom: 28px;
       box-shadow: var(--shadow);
+      padding: 16px 14px 18px;
     }
-    .doc-toc h2 { margin: 0 0 12px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
-    .doc-toc ul { margin: 0; padding: 0; list-style: none; columns: 1; }
-    @media (min-width: 560px) { .doc-toc ul { columns: 2; column-gap: 24px; } }
-    .doc-toc li { margin: 6px 0; break-inside: avoid; }
-    .doc-toc a { color: var(--accent); text-decoration: none; }
-    .doc-toc a:hover { text-decoration: underline; }
+    @media (min-width: 980px) {
+      .doc-nav {
+        position: sticky;
+        top: 16px;
+        max-height: calc(100vh - 32px);
+        overflow: auto;
+      }
+    }
+    .doc-nav h2 {
+      margin: 0 0 10px;
+      padding: 0 6px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .doc-nav-group { margin-top: 14px; }
+    .doc-nav-group:first-of-type { margin-top: 0; }
+    .doc-nav-label {
+      margin: 0 0 6px;
+      padding: 0 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .doc-nav ul { list-style: none; margin: 0; padding: 0; }
+    .doc-nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .doc-nav a:hover { background: var(--accent-soft); color: var(--accent-deep); }
+
+    .doc-main { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+
+    .doc-part {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 2px;
+      padding: 0 4px;
+    }
+    .doc-part-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+    .doc-part-badge--start { background: #ebecf0; color: #42526e; }
+    .doc-part-badge--sla { background: var(--sla-soft); color: var(--sla); }
+    .doc-part-badge--cap { background: var(--cap-soft); color: #006644; }
+    .doc-part-badge--shared { background: #ebecf0; color: #253858; }
+    .doc-part-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #253858;
+    }
+
     section.doc-section {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 22px 24px 26px;
-      margin-bottom: 20px;
+      padding: clamp(18px, 2.5vw, 28px);
       box-shadow: var(--shadow);
     }
     section.doc-section > h2 {
       margin: 0 0 6px;
-      font-size: 1.35rem;
-      font-weight: 700;
+      font-size: 1.4rem;
+      font-weight: 750;
       letter-spacing: -0.02em;
       color: #091e42;
-      padding-bottom: 12px;
-      border-bottom: 2px solid var(--accent-soft);
     }
-    section.doc-section > .doc-lead { margin: 0 0 16px; color: var(--muted); font-size: 0.95rem; }
-    h3 { font-size: 1.08rem; margin: 22px 0 10px; color: #253858; }
-    h4 { font-size: 0.98rem; margin: 16px 0 8px; color: #344563; }
+    .doc-lead {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      max-width: 68ch;
+    }
+    h3 {
+      font-size: 1.05rem;
+      margin: 22px 0 8px;
+      color: #253858;
+      letter-spacing: -0.01em;
+    }
+    h3:first-of-type { margin-top: 8px; }
+    h4 { font-size: 0.95rem; margin: 14px 0 6px; color: #344563; }
     p { margin: 0.55em 0; }
-    ul, ol { margin: 0.45em 0; padding-left: 1.35em; }
-    li { margin: 0.25em 0; }
-    a { color: var(--accent); }
-    code {
-      background: #f4f5f7;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 0.88em;
-      border: 1px solid #ebecf0;
-    }
-    .doc-note {
-      background: #fffae6;
-      border-left: 4px solid #ff991f;
-      padding: 10px 14px;
-      border-radius: 0 6px 6px 0;
+    ul, ol { margin: 0.5em 0; padding-left: 1.3em; }
+    li { margin: 0.28em 0; }
+    strong { font-weight: 650; }
+
+    .doc-callout {
+      border-radius: 10px;
+      padding: 12px 14px;
       margin: 14px 0;
-      font-size: 0.95rem;
+      font-size: 0.94rem;
     }
-    .doc-muted { color: var(--muted); font-size: 0.92rem; }
-    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.92rem; }
-    th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
-    th { background: #f4f5f7; font-weight: 600; }
-    tr:nth-child(even) td { background: #fafbfc; }
-    .doc-img {
-      display: block;
-      width: 100%;
-      max-width: 1200px;
-      height: auto;
-      border-radius: 8px;
-      margin: 12px 0;
+    .doc-callout--tip {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+    }
+    .doc-callout--warn {
+      background: var(--warn-soft);
+      border-left: 4px solid var(--warn);
+    }
+    .doc-callout--ok {
+      background: var(--cap-soft);
+      border-left: 4px solid var(--cap);
+    }
+    .doc-callout strong { display: inline; }
+
+    .doc-steps {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+      counter-reset: step;
+    }
+    .doc-step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      background: #fafbfc;
       border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
     }
+    .doc-step::before {
+      counter-increment: step;
+      content: counter(step);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      font-size: 0.9rem;
+    }
+    .doc-step p { margin: 0; }
+    .doc-step small { display: block; color: var(--muted); margin-top: 4px; font-size: 0.88rem; }
+
+    .doc-grid-2 {
+      display: grid;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    @media (min-width: 700px) {
+      .doc-grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .doc-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      background: #fafbfc;
+    }
+    .doc-card h3 { margin: 0 0 6px; font-size: 1rem; }
+    .doc-card p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+    .doc-card ul { margin: 8px 0 0; color: var(--text); font-size: 0.92rem; }
+
     .doc-kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
       margin: 12px 0;
     }
     .doc-kpi {
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
+      border-radius: 10px;
+      padding: 12px;
       background: #fafbfc;
     }
-    .doc-kpi strong { display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
-    .doc-subnav {
+    .doc-kpi strong {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .doc-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin: 12px 0 16px;
+      margin: 10px 0 14px;
     }
-    .doc-subnav span {
+    .doc-chips span {
       background: var(--accent-soft);
-      color: #0747a6;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 5px 12px;
+      color: var(--accent-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 11px;
       border-radius: 999px;
     }
-    .doc-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); text-align: center; }
+    .doc-chips--cap span {
+      background: var(--cap-soft);
+      color: #006644;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+      font-size: 0.9rem;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: #f4f5f7;
+      font-weight: 700;
+      color: #253858;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tr:nth-child(even) td { background: #fafbfc; }
+
+    .doc-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 14px 0 4px;
+      border: 1px solid var(--border);
+    }
+    .doc-figure { margin: 16px 0 8px; }
+    .doc-figure figcaption,
+    .doc-caption {
+      margin: 6px 0 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    /* Drop screenshots here later — replace .doc-ph with <img class="doc-img"> */
+    .doc-ph {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 160px;
+      padding: 24px 16px;
+      border: 2px dashed #b3bac5;
+      border-radius: 10px;
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          #fafbfc,
+          #fafbfc 12px,
+          #f4f5f7 12px,
+          #f4f5f7 24px
+        );
+      text-align: center;
+      color: var(--muted);
+    }
+    .doc-ph__label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #6b778c;
+    }
+    .doc-ph__file {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      font-weight: 650;
+      color: #253858;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+    .doc-ph__hint {
+      font-size: 0.88rem;
+      max-width: 42ch;
+      line-height: 1.4;
+    }
+
+    .doc-footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding-top: 8px;
+    }
+    code {
+      background: #f4f5f7;
+      border: 1px solid #ebecf0;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.88em;
+    }
   </style>
 </head>
 <body>
-<div class="doc-wrap">
+<div class="doc-shell">
 
   <header class="doc-hero">
+    <div class="doc-hero-eyebrow">OpusLeaf · Jira Cloud</div>
     <h1>AutoChase documentation</h1>
-    <p>Automate SLA tracking, reminders, escalations, and capacity planning for Jira Cloud teams.</p>
+    <p>One Marketplace app for SLA accountability and capacity planning. Turn products on or off per site, then configure only what your team needs.</p>
+    <div class="doc-hero-pills">
+      <span>SLA · reminders · escalations</span>
+      <span>Capacity planner</span>
+      <span>Organisation hierarchy</span>
+      <span>Issue panel</span>
+    </div>
   </header>
 
-  <nav class="doc-toc" aria-label="Table of contents">
+  <nav class="doc-nav" aria-label="Table of contents">
     <h2>On this page</h2>
-    <ul>
-      <li><a href="#getting-started">Getting started</a></li>
-      <li><a href="#dashboard">Dashboard</a></li>
-      <li><a href="#tracked-issues">Tracked issues</a></li>
-      <li><a href="#reports">Reports</a></li>
-      <li><a href="#capacity">Capacity planning</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#sla-rules">SLA rules</a></li>
-      <li><a href="#working-calendar">Working calendar</a></li>
-      <li><a href="#organisation">Organisation</a></li>
-      <li><a href="#how-it-works">How it works</a></li>
-      <li><a href="#issue-panel">Issue panel</a></li>
-      <li><a href="#troubleshooting">Troubleshooting</a></li>
-      <li><a href="#support">Support</a></li>
-    </ul>
+    <div class="doc-nav-group">
+      <p class="doc-nav-label">Start here</p>
+      <ul>
+        <li><a href="#overview">What AutoChase does</a></li>
+        <li><a href="#access">Access &amp; who can open it</a></li>
+        <li><a href="#products">Products (on/off)</a></li>
+        <li><a href="#getting-started">Getting started</a></li>
+      </ul>
+    </div>
+    <div class="doc-nav-group">
+      <p class="doc-nav-label">SLA product</p>
+      <ul>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#tracked-issues">Tracked issues</a></li>
+        <li><a href="#reports">Reports</a></li>
+        <li><a href="#sla-rules">SLA rules</a></li>
+        <li><a href="#working-calendar">Working calendar</a></li>
+        <li><a href="#issue-panel">Issue panel</a></li>
+      </ul>
+    </div>
+    <div class="doc-nav-group">
+      <p class="doc-nav-label">Capacity product</p>
+      <ul>
+        <li><a href="#capacity">Capacity planning</a></li>
+      </ul>
+    </div>
+    <div class="doc-nav-group">
+      <p class="doc-nav-label">Shared setup</p>
+      <ul>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#organisation">Organisation</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#support">Support</a></li>
+      </ul>
+    </div>
   </nav>
 
-  <!-- GETTING STARTED -->
-  <section class="doc-section" id="getting-started">
-    <h2>Getting started</h2>
-    <p class="doc-lead">Install AutoChase, connect your Jira projects, define SLAs, configure organisation structure, and set up capacity planning.</p>
-    <ol>
-      <li>Install AutoChase from the Atlassian Marketplace.</li>
-      <li>Open Jira → <strong>Apps → AutoChase</strong> (or Manage apps → AutoChase).</li>
-      <li>Add <strong>Projects</strong> from Jira and assign default SLAs and teams.</li>
-      <li>Create <strong>SLA rules</strong> with response/resolution times, reminders, leadership visibility, and working hours.</li>
-      <li>Open <strong>Organisation</strong> and add at least one <strong>department</strong>, <strong>team</strong>, and <strong>escalation hierarchy</strong> record.</li>
-      <li>Open <strong>Capacity planning → Setup</strong> (gear icon). Configure estimate source, default hours, and story points if needed → <strong>Save settings</strong>.</li>
-      <li>Use <strong>Capacity planning → Availability</strong> for leave, recurring meetings, and per-person overrides.</li>
-      <li>Review <strong>Sprint commitment</strong> and <strong>Backlog pressure</strong> to see workload vs capacity.</li>
-    </ol>
-    <p><strong>Navigation in the app:</strong> Dashboard · Tracked issues · Reports · Capacity planning · Projects · SLA rules · Organisation</p>
-    <div class="doc-note">
-      A setup reminder appears on Dashboard and Reports until department, team, and escalation hierarchy are configured. Team reports and manager-chain escalations require this org data.
-    </div>
-    <img
-      src="https://raw.githubusercontent.com/opusleaf/autochase-documentation/main/images/Dashboard.png"
-      alt="AutoChase admin — navigation, KPIs, and issues at risk of breach"
-      class="doc-img"
-    />
-  </section>
+  <div class="doc-main">
 
-  <!-- DASHBOARD -->
-  <section class="doc-section" id="dashboard">
-    <h2>Dashboard</h2>
-    <p class="doc-lead">High-level SLA health and capacity snapshot across tracked projects.</p>
-    <h3>KPI cards</h3>
-    <div class="doc-kpi-grid">
-      <div class="doc-kpi"><strong>Active projects</strong> Projects added in AutoChase. Click to open Projects.</div>
-      <div class="doc-kpi"><strong>Active SLAs</strong> SLA definitions. Click to open SLA rules.</div>
-      <div class="doc-kpi"><strong>On track</strong> Open issues within SLA limits. Click to filter Tracked issues.</div>
-      <div class="doc-kpi"><strong>At risk</strong> Issues past the warning threshold. Click to filter.</div>
-      <div class="doc-kpi"><strong>Breached</strong> Issues past resolution SLA. Click to filter.</div>
-    </div>
-    <p>When capacity data is available, additional KPIs show team utilization and overload counts.</p>
-    <h3>Project filter</h3>
-    <p>Use the global project filter at the top to narrow dashboard metrics to selected projects.</p>
-    <h3>Issues at risk of breach</h3>
-    <p>At-risk and breached <strong>open</strong> issues, sorted by urgency. Columns include Issue, Project, Organisation, Assignee, SLA, SLA progress, and Reminders &amp; escalation.</p>
-    <h3>Top breached projects</h3>
-    <p>Up to five projects with the most breaches in the current filter scope. Use <strong>View</strong> to jump to Tracked issues filtered by that project.</p>
-  </section>
-
-  <!-- TRACKED ISSUES -->
-  <section class="doc-section" id="tracked-issues">
-    <h2>Tracked issues</h2>
-    <p class="doc-lead">Live SLA monitoring with reminders, escalation, and per-issue controls.</p>
-    <h3>Filters</h3>
-    <ul>
-      <li><strong>Status:</strong> All, On track, At risk, Breached, Resolved</li>
-      <li><strong>SLA tracking:</strong> All SLA, SLA on, SLA off</li>
-      <li><strong>Project filter</strong> — limit to selected AutoChase projects</li>
-      <li><strong>Search</strong> — issue key, summary, project, assignee, department, team</li>
-    </ul>
-    <h3>Table</h3>
-    <table>
-      <tr><th>Column</th><th>Description</th></tr>
-      <tr><td>Track</td><td>Toggle SLA enforcement on/off for this issue</td></tr>
-      <tr><td>Issue</td><td>Jira issue link and summary</td></tr>
-      <tr><td>Project</td><td>Project key and name</td></tr>
-      <tr><td>Organisation</td><td>Department / team</td></tr>
-      <tr><td>Assignee</td><td>Current assignee</td></tr>
-      <tr><td>SLA</td><td>Applied policy — click to reassign</td></tr>
-      <tr><td>Priority</td><td>Jira priority</td></tr>
-      <tr><td>SLA progress</td><td>Live progress with business-hours awareness</td></tr>
-      <tr><td>Reminders &amp; escalation</td><td>Ack/progress reminders sent, escalation level</td></tr>
-    </table>
-    <p class="doc-muted"><strong>Sync issues</strong> (Projects tab) assigns the project default SLA only. Use <strong>Track</strong> to pause enforcement without removing the issue from the list.</p>
-  </section>
-
-  <!-- REPORTS -->
-  <section class="doc-section" id="reports">
-    <h2>Reports</h2>
-    <p class="doc-lead">Shareable SLA summaries for teams and leadership. <strong>All report types include SLA metrics.</strong> Capacity is optional for Leadership and Full reports only.</p>
-    <h3>Report types</h3>
-    <table>
-      <tr><th>Type</th><th>Contents</th></tr>
-      <tr><td>Team SLA health</td><td>Operational SLA metrics for a selected team or all teams</td></tr>
-      <tr><td>At-risk &amp; breaches</td><td>Open issues at risk or in breach only</td></tr>
-      <tr><td>Project SLA rollup</td><td>Per-project SLA summary and breach counts</td></tr>
-      <tr><td>Leadership digest</td><td>Executive summary with optional capacity snapshot</td></tr>
-      <tr><td>Full report</td><td>Complete SLA view plus optional capacity section</td></tr>
-    </table>
-    <h3>Options</h3>
-    <ul>
-      <li><strong>Team</strong> — limit to one team or all teams</li>
-      <li><strong>From / To</strong> — optional date range for SLA tickets (leave empty for full history)</li>
-      <li><strong>Output</strong> — Preview on screen, Export CSV, or Save as PDF (via print dialog)</li>
-      <li><strong>Include capacity</strong> — checkbox for Leadership digest and Full report only; adds a capacity snapshot at generation time</li>
-    </ul>
-    <p>Click <strong>Generate</strong> to build the report. Preview appears below; CSV downloads; PDF opens the browser print dialog.</p>
-    <div class="doc-note">
-      <strong>Date range:</strong> Resolved tickets must fall in the window; open tickets must have been created on or before the end date. The report footer shows the selected period, generation time, and calendar/timezone notes. Status counts and % met apply to resolved tickets in the filtered set.
-    </div>
-  </section>
-
-  <!-- CAPACITY -->
-  <section class="doc-section" id="capacity">
-    <h2>Capacity planning</h2>
-    <p class="doc-lead">See open Jira work against each person’s capacity. AutoChase combines SLA deadlines with workload so you can spot overload before breach.</p>
-
-    <p>Capacity planning uses six sections (sub-tabs):</p>
-    <div class="doc-subnav" aria-label="Capacity sub-tabs">
-      <span>Sprint commitment</span>
-      <span>Backlog pressure</span>
-      <span>Reports</span>
-      <span>Velocity</span>
-      <span>Availability</span>
-      <span>Setup</span>
+    <div class="doc-part">
+      <span class="doc-part-badge doc-part-badge--start">Start here</span>
+      <span class="doc-part-title">Understand the product before you configure</span>
     </div>
 
-    <h3>Sprint commitment</h3>
-    <p>Plan a specific Jira sprint: compare <strong>demand</strong> (assigned work in the sprint) to <strong>supply</strong> (available hours after meetings, leave, and focus factor).</p>
-    <table>
-      <tr><th>Filter</th><th>Description</th></tr>
-      <tr><td>Board</td><td>Jira Scrum/Kanban board — sprint dates and sprint-scoped work come from this board</td></tr>
-      <tr><td>Sprint</td><td>Active sprint or a specific sprint from the board</td></tr>
-      <tr><td>View by</td><td><strong>Person</strong> (capacity and overload per assignee) or <strong>Project</strong> (workload rollup)</td></tr>
-      <tr><td>Search</td><td>Filter rows by person or project name</td></tr>
-    </table>
-    <p><strong>Summary KPIs:</strong> Demand (h), Supply (h), Utilization %, Gap (h), Overloaded count.</p>
-    <p>Positive <strong>gap</strong> means more work is assigned than the team can deliver in the sprint window. Sprint commitment is <strong>board-scoped</strong> — pick the board that matches how your team plans sprints.</p>
+    <section class="doc-section" id="overview">
+      <h2>What AutoChase does</h2>
+      <p class="doc-lead">AutoChase sits next to Jira so teams see SLA risk early and plan capacity against real open work — without leaving the tools they already use.</p>
+      <div class="doc-grid-2">
+        <div class="doc-card">
+          <h3>SLA, reminders &amp; escalations</h3>
+          <p>Track response and resolution targets, send ack/progress reminders, and escalate through your org hierarchy.</p>
+          <ul>
+            <li>Dashboard &amp; tracked issues</li>
+            <li>SLA rules &amp; working calendar</li>
+            <li>Issue side panel</li>
+            <li>Leadership reports</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Capacity planner</h3>
+          <p>Compare open workload to weekly and sprint capacity so overload shows up before deadlines slip.</p>
+          <ul>
+            <li>Sprint commitment</li>
+            <li>Backlog pressure</li>
+            <li>Availability &amp; leave</li>
+            <li>Velocity &amp; capacity exports</li>
+          </ul>
+        </div>
+      </div>
+      <div class="doc-callout doc-callout--tip">
+        <strong>One Marketplace plan.</strong> Sites subscribe once, then a Jira admin turns Capacity and/or SLA on or off under <strong>Access → Products</strong>. There is no Standard vs Advanced edition lock in the app.
+      </div>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Overview">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Overview_Products.png</span>
+          <span class="doc-ph__hint">Side-by-side: SLA features and Capacity planner in the console</span>
+        </div>
+        <figcaption>Replace with a product overview screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <h3>Backlog pressure</h3>
-    <p>Open workload vs <strong>weekly</strong> capacity (not sprint-length). Use this for ongoing backlog health.</p>
-    <table>
-      <tr><th>Metric</th><th>Meaning</th></tr>
-      <tr><td>Workload (h)</td><td>Open demand from assigned issues</td></tr>
-      <tr><td>Capacity (h/wk)</td><td>Available hours per week</td></tr>
-      <tr><td>Utilization %</td><td>Workload ÷ capacity</td></tr>
-      <tr><td>Backlog (wk)</td><td>Weeks of work at current capacity</td></tr>
-      <tr><td>Gap (h)</td><td>Hours above available capacity</td></tr>
-      <tr><td>Band</td><td>OK (&lt;85%), High (85–100%), Overload (&gt;100%)</td></tr>
-    </table>
-    <p>Filters: projects, group by (person or project), time window (All open, Sprint, Outside active sprint, Updated this month/year), utilization band, and search. Per overloaded person, use <strong>Set Xh/wk</strong> to apply a recommended weekly hours override.</p>
+    <section class="doc-section" id="access">
+      <h2>Access &amp; who can open it</h2>
+      <p class="doc-lead">The AutoChase console is not open to every Jira user. Access is controlled by Jira admin rights and an optional delegate list.</p>
+      <table>
+        <tr><th>Who</th><th>What they can do</th></tr>
+        <tr>
+          <td><strong>Jira site administrators</strong></td>
+          <td>Full console. See the <strong>Access</strong> tab. Manage Products toggles and global managers.</td>
+        </tr>
+        <tr>
+          <td><strong>Global managers</strong></td>
+          <td>Full console for projects, SLAs, capacity, and organisation. Cannot manage Access or Product toggles.</td>
+        </tr>
+        <tr>
+          <td><strong>Everyone else</strong></td>
+          <td>Cannot use the console. They may still see the issue SLA panel when SLA is on and they can browse the issue.</td>
+        </tr>
+      </table>
+      <h3>Where to open AutoChase</h3>
+      <ul>
+        <li><strong>Apps → AutoChase</strong> — main console for admins and global managers</li>
+        <li><strong>Jira admin settings → Apps → AutoChase</strong> — same console for site admins</li>
+      </ul>
+      <div class="doc-callout doc-callout--tip">
+        <strong>How to delegate:</strong> A site admin opens <strong>Access</strong>, searches for a person, and clicks <strong>Add global manager</strong>. Remove them anytime from the same table.
+      </div>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Access">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Access_Global_Managers.png</span>
+          <span class="doc-ph__hint">Access tab — add/remove global managers table</span>
+        </div>
+        <figcaption>Replace with the Access tab screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <h3>Capacity Reports (sub-tab)</h3>
-    <p>On-demand exports for planning meetings — distinct from the main <strong>Reports</strong> tab (SLA-focused).</p>
-    <table>
-      <tr><th>Type</th><th>Use for</th></tr>
-      <tr><td>Backlog pressure</td><td>Detailed backlog export with person or project grouping</td></tr>
-      <tr><td>Overload radar</td><td>Focus on overloaded assignees</td></tr>
-      <tr><td>Sprint commitment</td><td>Export sprint plan data</td></tr>
-      <tr><td>Multi-sprint comparison</td><td>Compare demand/supply across several sprints</td></tr>
-    </table>
-    <p>Generate on screen, then <strong>Export CSV</strong> or <strong>Export Excel</strong> (.xlsx with formatted matrix).</p>
+    <section class="doc-section" id="products">
+      <h2>Products (on / off)</h2>
+      <p class="doc-lead">Under <strong>Access → Products</strong>, site admins choose what this installation uses. Turning a product off hides its pages and stops related scheduled work for everyone on the site.</p>
+      <table>
+        <tr><th>Toggle</th><th>When on</th><th>When off</th></tr>
+        <tr>
+          <td><strong>Capacity planner</strong></td>
+          <td>Capacity planning tab and capacity math are available.</td>
+          <td>Capacity tab disappears. Capacity snapshots leave the issue panel.</td>
+        </tr>
+        <tr>
+          <td><strong>SLA, reminders and escalations</strong></td>
+          <td>Dashboard, Tracked issues, Reports, SLA rules, reminders, escalations, and the issue SLA module.</td>
+          <td>Those SLA pages hide. Escalation hierarchy hides under Organisation. The AutoChase SLA issue module is hidden on issues.</td>
+        </tr>
+      </table>
+      <div class="doc-callout doc-callout--warn">
+        <strong>Keep at least one product on.</strong> You cannot turn off the last remaining product. Trial installs show a Trial badge on the Products card until the Marketplace trial ends.
+      </div>
+      <h3>What you see in the nav</h3>
+      <p>Navigation adapts to the toggles:</p>
+      <ul>
+        <li><strong>Both on:</strong> Dashboard · Tracked issues · Reports · Capacity planning · Projects · SLA rules · Organisation · Access (admins)</li>
+        <li><strong>Capacity only:</strong> Capacity planning · Projects · Organisation (Departments &amp; Teams) · Access (admins)</li>
+        <li><strong>SLA only:</strong> Dashboard · Tracked issues · Reports · Projects · SLA rules · Organisation (incl. Escalation hierarchy) · Access (admins)</li>
+      </ul>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Products">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Access_Products.png</span>
+          <span class="doc-ph__hint">Access → Products toggles (Capacity planner · SLA, reminders and escalations)</span>
+        </div>
+        <figcaption>Replace with the Products card screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <h3>Velocity</h3>
-    <p>Throughput trends from <strong>closed sprints</strong> on a Jira board. Use for forecasting and comparing team members.</p>
-    <ul>
-      <li><strong>Board</strong> — velocity is read from closed sprints on this board</li>
-      <li><strong>Sprints</strong> — recent closed (last 3/6/9/12) or pick specific closed sprints</li>
-      <li><strong>Chart</strong> — hours or story points</li>
-      <li><strong>Compare people</strong> — optional overlay lines on the trend chart</li>
-    </ul>
-    <p>Click <strong>Apply</strong> after changing filters. Charts show team throughput; tables show per-person velocity summary and sprint-by-sprint breakdown. An upcoming sprint forecast uses historical velocity when board data is available.</p>
+    <section class="doc-section" id="getting-started">
+      <h2>Getting started</h2>
+      <p class="doc-lead">Install once, then follow the path that matches the products you enabled.</p>
 
-    <h3>Availability</h3>
-    <ul>
-      <li><strong>Leave</strong> — personal leave periods reduce sprint supply</li>
-      <li><strong>Recurring meetings</strong> — templates and per-person meeting blocks</li>
-      <li><strong>Person overrides</strong> — custom weekly capacity or meeting hours for one person</li>
-      <li><strong>Focus factor</strong> — team-wide share of capacity for focused sprint work (configured in Setup)</li>
-    </ul>
+      <div class="doc-steps">
+        <div class="doc-step">
+          <div>
+            <p><strong>Install from the Marketplace</strong></p>
+            <small>Choose AutoChase for Jira Cloud and complete the site install.</small>
+          </div>
+        </div>
+        <div class="doc-step">
+          <div>
+            <p><strong>Open the console</strong></p>
+            <small>Go to <strong>Apps → AutoChase</strong>. Site admins can also open it from Jira admin → Apps.</small>
+          </div>
+        </div>
+        <div class="doc-step">
+          <div>
+            <p><strong>Set products &amp; access</strong></p>
+            <small>On <strong>Access</strong>, turn Capacity and/or SLA on, then add any global managers who should configure the app.</small>
+          </div>
+        </div>
+        <div class="doc-step">
+          <div>
+            <p><strong>Add projects</strong></p>
+            <small>Under <strong>Projects</strong>, load Jira projects, set owner email, optional default SLA and team, then sync issues if SLA is on.</small>
+          </div>
+        </div>
+        <div class="doc-step">
+          <div>
+            <p><strong>Configure the products you enabled</strong></p>
+            <small>SLA path: SLA rules → Organisation (incl. hierarchy) → review Dashboard. Capacity path: Setup → Availability → Sprint commitment / Backlog pressure.</small>
+          </div>
+        </div>
+      </div>
 
-    <h3>Setup (gear icon)</h3>
-    <p>One-time team defaults for capacity math. Change rarely — use <strong>Availability</strong> for day-to-day leave and meetings.</p>
-    <table>
-      <tr><th>Setting</th><th>Description</th></tr>
-      <tr><td>Enable capacity planning</td><td>Master switch for capacity reporting and issue-panel workload</td></tr>
-      <tr><td>Estimate from</td><td>Remaining estimate, Original estimate, or Story points</td></tr>
-      <tr><td>Minutes if missing</td><td>Fallback when an issue has no estimate (0 = exclude from demand)</td></tr>
-      <tr><td>Per-project estimate source</td><td>Override default demand mode per project</td></tr>
-      <tr><td>Story points field</td><td>Jira custom field; use <strong>Auto-detect</strong></td></tr>
-      <tr><td>Hours / point</td><td>Converts story points to hours</td></tr>
-      <tr><td>Default hours / week</td><td>Baseline capacity per person (e.g. 40)</td></tr>
-      <tr><td>Default meeting hours / week</td><td>Simple weekly meeting load when detailed meetings are off</td></tr>
-      <tr><td>Focus factor</td><td>Share of capacity for focused work (e.g. 0.85 = 85%)</td></tr>
-      <tr><td>Target util %</td><td>Used by auto-balance recommendations</td></tr>
-      <tr><td>Include all project members</td><td>Show full project roster, not only assignees with open tickets</td></tr>
-    </table>
-    <p>Click <strong>Save settings</strong> after changes, then <strong>Refresh</strong> on the relevant capacity tab.</p>
+      <div class="doc-grid-2">
+        <div class="doc-card">
+          <h3>If SLA is on</h3>
+          <ul>
+            <li>Create at least one SLA rule</li>
+            <li>Add department, team, and escalation hierarchy</li>
+            <li>Sync issues and confirm the issue panel on a sample ticket</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>If Capacity is on</h3>
+          <ul>
+            <li>Open Capacity → Setup and save estimate defaults</li>
+            <li>Add leave / meetings under Availability</li>
+            <li>Review Sprint commitment and Backlog pressure</li>
+          </ul>
+        </div>
+      </div>
 
-    <h3>How demand is calculated</h3>
-    <ol>
-      <li>Uses <strong>Remaining estimate</strong> (or Original estimate / Story points per your setting)</li>
-      <li>Per-project overrides apply when configured</li>
-      <li>If time estimate is missing, uses <strong>minutes if missing</strong> or story points × hours/point</li>
-      <li>Unassigned issues can appear in a separate unassigned pool</li>
-    </ol>
+      <div class="doc-callout doc-callout--tip">
+        When SLA is on, a setup reminder stays on Dashboard and Reports until department, team, and escalation hierarchy exist. Team reports and manager-chain escalations need that org data.
+      </div>
 
-    <h3>Capacity on the issue panel</h3>
-    <p>When capacity planning is enabled, the issue side panel shows assignee workload vs SLA resolution time remaining — <strong>capacity at risk</strong> when backlog exceeds time left before breach.</p>
+      <figure class="doc-figure">
+        <!-- When ready: <img class="doc-img" src="images/Getting_Started.png" alt="..." /> -->
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Getting started">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Getting_Started.png</span>
+          <span class="doc-ph__hint">First-run console: nav + empty or partially configured state</span>
+        </div>
+        <figcaption>Replace with a getting-started screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <div class="doc-note">Add at least one project under Projects before running capacity reports. Configure story points field if your team uses points instead of time estimates.</div>
-    <img
-      src="https://raw.githubusercontent.com/opusleaf/autochase-documentation/main/images/Capacity_Planning.png"
-      alt="Capacity planning — sprint commitment, backlog pressure, velocity, and availability"
-      class="doc-img"
-    />
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="doc-section" id="projects">
-    <h2>Projects</h2>
-    <p class="doc-lead">Choose which Jira projects AutoChase tracks. Projects define SLA scope and capacity scope.</p>
-    <h3>Sync and add</h3>
-    <ul>
-      <li><strong>Sync projects</strong> — pull project metadata from Jira</li>
-      <li><strong>Sync issues</strong> — pull issues into AutoChase tracking</li>
-      <li><strong>Load projects</strong> — populate dropdown from Jira</li>
-      <li><strong>Owner email</strong> (required) — used for escalation when tickets are unassigned</li>
-    </ul>
-    <h3>Per-project configuration</h3>
-    <ul>
-      <li><strong>Issue types to track</strong> — limit which types are imported</li>
-      <li><strong>Default SLA</strong> — applied on sync for new issues</li>
-      <li><strong>Team</strong> — links project to organisation structure for reports and escalation</li>
-    </ul>
-    <h3>Project actions</h3>
-    <p>Edit, Assign SLA, Assign team, or Remove.</p>
-    <p class="doc-muted">Use <strong>Capacity planning</strong> for workload and sprint planning; use <strong>Reports</strong> for shareable SLA summaries.</p>
-  </section>
-
-  <!-- SLA RULES -->
-  <section class="doc-section" id="sla-rules">
-    <h2>SLA rules</h2>
-    <p class="doc-lead">Define response and resolution targets, reminders, leadership visibility, SLA clock behavior, and working hours.</p>
-
-    <h3>SLA modes</h3>
-    <ul>
-      <li><strong>Single SLA</strong> — same response/resolution for all priorities</li>
-      <li><strong>Priority-based SLA (P1–P5)</strong> — different targets per priority</li>
-    </ul>
-
-    <h3>Five-step wizard</h3>
-    <ol>
-      <li><strong>SLA Timing</strong> — name, times, warning threshold, scope, SLA clock, working hours</li>
-      <li><strong>Acknowledgment reminders</strong> — up to 3 percentages of response time</li>
-      <li><strong>Progress reminders</strong> — up to 3 percentages of resolution time</li>
-      <li><strong>Leadership visibility levels</strong> — manager-chain thresholds</li>
-      <li><strong>Review &amp; submit</strong></li>
-    </ol>
-
-    <h3>Key fields</h3>
-    <table>
-      <tr><th>Field</th><th>Purpose</th></tr>
-      <tr><td>Response / Resolution time</td><td>SLA targets</td></tr>
-      <tr><td>Warning threshold (%)</td><td>When status becomes At risk</td></tr>
-      <tr><td>Clock starts</td><td>Jira created, on status match, or on active sprint</td></tr>
-      <tr><td>Pause while status is…</td><td>Statuses that stop the SLA clock</td></tr>
-      <tr><td>Working time</td><td>Count SLA elapsed time only during business hours (see Working calendar)</td></tr>
-    </table>
-
-    <h3>Status lifecycle</h3>
-    <p><strong>On track</strong> → <strong>At risk</strong> (warning %) → <strong>Breach</strong> (resolution exceeded)</p>
-  </section>
-
-  <!-- WORKING CALENDAR -->
-  <section class="doc-section" id="working-calendar">
-    <h2>Working calendar</h2>
-    <p class="doc-lead">Configure when SLA time counts — business hours, weekends, short days, holidays, and timezone.</p>
-    <p>Configure working time in <strong>SLA rules → Create/Edit SLA → Step 1 → Working time</strong>.</p>
-
-    <h3>Enable business hours</h3>
-    <p>Check <strong>Count this SLA only during working hours</strong>. When enabled, SLA budgets (e.g. 16 hours) advance only during configured windows. Nights, unchecked days, and holidays do not count.</p>
-
-    <h3>Timezone</h3>
-    <p>Searchable IANA timezone picker. Use <strong>Use my timezone</strong> for a quick start. All day/time rules apply in this timezone.</p>
-
-    <h3>Work days and hours</h3>
-    <h4>Same hours every day</h4>
-    <ul>
-      <li>Check Mon–Fri (default); <strong>uncheck Sat and Sun</strong> to exclude weekends</li>
-      <li>Set Start (e.g. 09:00) and End (e.g. 17:00)</li>
-    </ul>
-    <h4>Different hours per day</h4>
-    <p>Enable <strong>Set different hours for each day</strong>. Example: Mon–Thu 09:00–17:00, <strong>Friday 09:00–13:00</strong> (half day).</p>
-
-    <h3>Holidays</h3>
-    <ul>
-      <li>Enter dates as <code>YYYY-MM-DD</code> (one per line)</li>
-      <li>Upload CSV, TSV, or Excel (.xlsx)</li>
-      <li>Use presets: US federal, UK bank, India public, EU common, APAC mix (2026)</li>
-      <li>Download template for bulk import</li>
-    </ul>
-
-    <div class="doc-note">Example: Mon–Fri 09:00–17:00, Friday 09:00–13:00, Sat/Sun off, plus regional holiday list — a 16-hour SLA counts only business minutes in that calendar.</div>
-  </section>
-
-  <!-- ORGANISATION -->
-  <section class="doc-section" id="organisation">
-    <h2>Organisation</h2>
-    <p class="doc-lead">Departments, teams, and escalation hierarchy in one place.</p>
-    <div class="doc-subnav" aria-label="Organisation sub-tabs">
-      <span>Departments</span>
-      <span>Teams</span>
-      <span>Escalation hierarchy</span>
+    <div class="doc-part">
+      <span class="doc-part-badge doc-part-badge--sla">SLA product</span>
+      <span class="doc-part-title">Tracking, reminders, escalations, and reports</span>
     </div>
 
-    <h3>Departments</h3>
-    <p>Organizational buckets for analytics and escalation context. Add name and optional description. Create departments before teams.</p>
+    <section class="doc-section" id="dashboard">
+      <h2>Dashboard</h2>
+      <p class="doc-lead">High-level SLA health across tracked projects. Visible when <strong>SLA, reminders and escalations</strong> is on.</p>
+      <h3>KPI cards</h3>
+      <div class="doc-kpi-grid">
+        <div class="doc-kpi"><strong>Active projects</strong> Projects added in AutoChase</div>
+        <div class="doc-kpi"><strong>Active SLAs</strong> SLA definitions in use</div>
+        <div class="doc-kpi"><strong>On track</strong> Open issues within limits</div>
+        <div class="doc-kpi"><strong>At risk</strong> Past warning threshold</div>
+        <div class="doc-kpi"><strong>Breached</strong> Past resolution SLA</div>
+      </div>
+      <p>When capacity data is also available, extra KPIs can show utilization and overload.</p>
+      <h3>What else is on the page</h3>
+      <ul>
+        <li><strong>Project filter</strong> — narrow KPIs and lists to selected projects</li>
+        <li><strong>Issues at risk of breach</strong> — open at-risk / breached issues by urgency</li>
+        <li><strong>Top breached projects</strong> — jump into Tracked issues for that project</li>
+      </ul>
+      <figure class="doc-figure">
+        <!-- Existing asset option: images/Dashboard.png -->
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Dashboard">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Dashboard.png</span>
+          <span class="doc-ph__hint">Dashboard KPIs, project filter, and issues at risk of breach</span>
+        </div>
+        <figcaption>Replace with the Dashboard screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <h3>Teams</h3>
-    <p>Group people and projects under a department. Assign teams to projects from the <strong>Projects</strong> tab. Used by Reports team filter and org columns on issues.</p>
+    <section class="doc-section" id="tracked-issues">
+      <h2>Tracked issues</h2>
+      <p class="doc-lead">Live SLA monitoring with reminders, escalation state, and per-issue controls.</p>
+      <h3>Filters</h3>
+      <ul>
+        <li><strong>Status:</strong> All, On track, At risk, Breached, Resolved</li>
+        <li><strong>SLA tracking:</strong> All SLA, SLA on, SLA off</li>
+        <li><strong>Project filter</strong> and <strong>Search</strong> (key, summary, assignee, org)</li>
+      </ul>
+      <h3>Table columns</h3>
+      <table>
+        <tr><th>Column</th><th>What it means</th></tr>
+        <tr><td>Track</td><td>Pause or resume SLA enforcement for this issue</td></tr>
+        <tr><td>Issue / Project / Organisation / Assignee</td><td>Context from Jira and AutoChase org links</td></tr>
+        <tr><td>SLA</td><td>Applied policy — click to reassign</td></tr>
+        <tr><td>SLA progress</td><td>Live progress with business-hours awareness</td></tr>
+        <tr><td>Reminders &amp; escalation</td><td>Ack/progress reminders sent and escalation level</td></tr>
+      </table>
+      <p><strong>Sync issues</strong> (Projects) assigns the project default SLA. Use <strong>Track</strong> to pause enforcement without removing the issue from the list.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Tracked issues">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Tracked_Issues.png</span>
+          <span class="doc-ph__hint">Tracked issues table with filters and SLA progress</span>
+        </div>
+        <figcaption>Replace with the Tracked issues screenshot.</figcaption>
+      </figure>
+    </section>
 
-    <h3>Escalation hierarchy</h3>
-    <p>Upload org structure for manager-chain leadership visibility.</p>
-    <ol>
-      <li>Download template (columns: <code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>)</li>
-      <li>Import CSV, TSV, or Excel (.xlsx)</li>
-      <li>Click <strong>Resolve Jira IDs</strong> to link emails to Jira accounts</li>
-      <li>Verify in the table; use <strong>Add employee</strong> for manual edits</li>
-    </ol>
-    <p>Leadership visibility levels in SLA rules walk the manager chain from the assignee using this hierarchy.</p>
-  </section>
+    <section class="doc-section" id="reports">
+      <h2>Reports</h2>
+      <p class="doc-lead">Shareable SLA summaries for teams and leadership. Capacity snapshots are optional on some report types when Capacity is also on.</p>
+      <table>
+        <tr><th>Type</th><th>Use it for</th></tr>
+        <tr><td>Team SLA health</td><td>Operational SLA metrics for one team or all teams</td></tr>
+        <tr><td>At-risk &amp; breaches</td><td>Open issues that need attention now</td></tr>
+        <tr><td>Project SLA rollup</td><td>Per-project summary and breach counts</td></tr>
+        <tr><td>Leadership digest</td><td>Executive view with org-level breakdowns</td></tr>
+        <tr><td>Full report</td><td>Complete SLA picture across org and policies</td></tr>
+        <tr><td>Resolved — no human comments</td><td>Resolved/closed tickets with no human discussion (system comments ignored)</td></tr>
+      </table>
+      <h3>Options</h3>
+      <ul>
+        <li><strong>Team</strong> and optional <strong>From / To</strong> date range</li>
+        <li><strong>Output:</strong> Preview, Export CSV, or Save as PDF (print dialog)</li>
+      </ul>
+      <div class="doc-callout doc-callout--tip">
+        <strong>Date range:</strong> Resolved tickets must fall in the window; open tickets must have been created on or before the end date. Status counts and % met apply to resolved tickets in the filtered set.
+      </div>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Reports">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Reports.png</span>
+          <span class="doc-ph__hint">Reports filters and generated preview</span>
+        </div>
+        <figcaption>Replace with the Reports screenshot.</figcaption>
+      </figure>
+    </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="doc-section" id="how-it-works">
-    <h2>How it works</h2>
-    <p class="doc-lead">End-to-end flow once projects, SLAs, organisation, and capacity are configured.</p>
-    <ol>
-      <li><strong>Tracking</strong> — New issues in enabled projects are tracked (via webhook and sync)</li>
-      <li><strong>SLA assignment</strong> — From project default and SLA matching rules; manual override per issue</li>
-      <li><strong>SLA clock</strong> — Runs during working hours if configured; pauses on selected statuses</li>
-      <li><strong>Status</strong> — on_track → at_risk → breach</li>
-      <li><strong>Reminders</strong> — Acknowledgment and progress comments at configured thresholds</li>
-      <li><strong>Leadership visibility</strong> — Escalation levels via hierarchy on scheduled checks</li>
-      <li><strong>Capacity</strong> — Workload from open issues; compared to weekly hours, sprint supply, and SLA time remaining</li>
-      <li><strong>Resolution</strong> — Tracking stops when issue reaches done/resolved</li>
-    </ol>
-  </section>
+    <section class="doc-section" id="sla-rules">
+      <h2>SLA rules</h2>
+      <p class="doc-lead">Define response and resolution targets, reminders, leadership visibility, clock behaviour, and working hours.</p>
+      <h3>Modes</h3>
+      <ul>
+        <li><strong>Single SLA</strong> — same targets for all priorities</li>
+        <li><strong>Priority-based SLA (P1–P5)</strong> — different targets per priority</li>
+      </ul>
+      <h3>Five-step wizard</h3>
+      <ol>
+        <li><strong>SLA Timing</strong> — name, times, warning %, scope, clock, working hours</li>
+        <li><strong>Acknowledgment reminders</strong> — up to 3 % of response time</li>
+        <li><strong>Progress reminders</strong> — up to 3 % of resolution time</li>
+        <li><strong>Leadership visibility</strong> — manager-chain thresholds</li>
+        <li><strong>Review &amp; submit</strong></li>
+      </ol>
+      <table>
+        <tr><th>Field</th><th>Purpose</th></tr>
+        <tr><td>Response / Resolution time</td><td>SLA targets</td></tr>
+        <tr><td>Warning threshold (%)</td><td>When status becomes At risk</td></tr>
+        <tr><td>Clock starts</td><td>Created, on status match, or on active sprint</td></tr>
+        <tr><td>Pause while status is…</td><td>Statuses that stop the SLA clock</td></tr>
+        <tr><td>Working time</td><td>Count time only during business hours</td></tr>
+      </table>
+      <p><strong>Status lifecycle:</strong> On track → At risk (warning %) → Breach (resolution exceeded).</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for SLA rules">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">SLA_Rules_Wizard.png</span>
+          <span class="doc-ph__hint">SLA create/edit wizard (timing or review step)</span>
+        </div>
+        <figcaption>Replace with the SLA rules wizard screenshot.</figcaption>
+      </figure>
+    </section>
 
-  <!-- ISSUE PANEL -->
-  <section class="doc-section" id="issue-panel">
-    <h2>Issue panel</h2>
-    <p class="doc-lead">Per-issue SLA and capacity context inside Jira.</p>
-    <p>Open a tracked issue and select the <strong>SLA Status</strong> panel.</p>
-    <h3>SLA snapshot</h3>
-    <ul>
-      <li>Status (On track / At risk / Breach)</li>
-      <li>Escalation level, Acknowledgment state</li>
-      <li>Applied SLA policy and source (auto match vs manual)</li>
-      <li>Response and resolution time remaining</li>
-      <li>Live SLA progress with business-hours awareness</li>
-    </ul>
-    <h3>Capacity snapshot</h3>
-    <p>Assignee workload, weekly capacity, utilization, and whether workload exceeds SLA resolution time left.</p>
-    <h3>Actions</h3>
-    <p><strong>Quick acknowledge</strong> and <strong>Assign SLA</strong> from the panel.</p>
-  </section>
+    <section class="doc-section" id="working-calendar">
+      <h2>Working calendar</h2>
+      <p class="doc-lead">Control when SLA time counts — business hours, weekends, short days, holidays, and timezone.</p>
+      <p>Configure this in <strong>SLA rules → Create/Edit SLA → Step 1 → Working time</strong>.</p>
+      <ul>
+        <li>Enable <strong>Count this SLA only during working hours</strong></li>
+        <li>Pick an IANA timezone (or <strong>Use my timezone</strong>)</li>
+        <li>Set work days and start/end times; optionally different hours per day</li>
+        <li>Add holidays as dates, CSV/TSV/Excel, or use regional presets</li>
+      </ul>
+      <div class="doc-callout doc-callout--ok">
+        Example: Mon–Thu 09:00–17:00, Friday 09:00–13:00, weekends off, plus holidays — a 16-hour SLA only burns business minutes.
+      </div>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Working calendar">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Working_Calendar.png</span>
+          <span class="doc-ph__hint">Working hours, timezone, and holidays on an SLA</span>
+        </div>
+        <figcaption>Replace with the working calendar screenshot.</figcaption>
+      </figure>
+    </section>
 
-  <!-- TROUBLESHOOTING -->
-  <section class="doc-section" id="troubleshooting">
-    <h2>Troubleshooting</h2>
-    <table>
-      <tr><th>Problem</th><th>What to try</th></tr>
-      <tr><td>Issue not tracked</td><td>Add project in Projects; create issue or Sync issues</td></tr>
-      <tr><td>No SLA assigned</td><td>Create matching SLA; set project default SLA</td></tr>
-      <tr><td>Escalation not working</td><td>Upload hierarchy; Resolve Jira IDs; check SLA leadership levels</td></tr>
-      <tr><td>Team report incomplete</td><td>Add department, team, and hierarchy under Organisation</td></tr>
-      <tr><td>Capacity tab empty</td><td>Add projects; enable capacity in Setup; Save settings; Refresh</td></tr>
-      <tr><td>Sprint commitment empty</td><td>Select a board and sprint; ensure issues are in that sprint</td></tr>
-      <tr><td>Wrong workload numbers</td><td>Check estimate source, story points field, hours/point; ensure estimates exist in Jira</td></tr>
-      <tr><td>Velocity shows no data</td><td>Select board with closed sprints; click Apply</td></tr>
-      <tr><td>SLA seems slow/fast</td><td>Review working hours, holidays, timezone, and pause statuses on the SLA</td></tr>
-      <tr><td>Report date range wrong</td><td>Check From/To dates; empty = full history</td></tr>
-      <tr><td>New scopes after deploy</td><td><code>forge install --upgrade -e &lt;environment&gt;</code></td></tr>
-    </table>
-  </section>
+    <section class="doc-section" id="issue-panel">
+      <h2>Issue panel</h2>
+      <p class="doc-lead">Per-issue SLA (and capacity) context inside Jira. Shown when the SLA product is on.</p>
+      <p>Open a tracked issue and select the <strong>AutoChase SLA</strong> panel in the right rail.</p>
+      <div class="doc-grid-2">
+        <div class="doc-card">
+          <h3>SLA snapshot</h3>
+          <ul>
+            <li>On track / At risk / Breach</li>
+            <li>Escalation level &amp; acknowledgment</li>
+            <li>Applied SLA and source (auto vs manual)</li>
+            <li>Time remaining and live progress</li>
+          </ul>
+        </div>
+        <div class="doc-card">
+          <h3>Capacity snapshot</h3>
+          <ul>
+            <li>Shown when Capacity is also on</li>
+            <li>Assignee workload vs weekly capacity</li>
+            <li>Capacity at risk vs SLA time left</li>
+            <li>Quick acknowledge / Assign SLA actions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="doc-callout doc-callout--warn">
+        When <strong>SLA, reminders and escalations</strong> is off, the entire AutoChase SLA issue module is hidden — not just emptied.
+      </div>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Issue panel">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Issue_Panel.png</span>
+          <span class="doc-ph__hint">Jira issue right rail — AutoChase SLA panel</span>
+        </div>
+        <figcaption>Replace with the issue panel screenshot.</figcaption>
+      </figure>
+    </section>
 
-  <!-- SUPPORT -->
-  <section class="doc-section" id="support">
-    <h2>Support</h2>
-    <p>For questions or issues, visit <a href="https://www.opusleaf.com">opusleaf.com</a> or email <a href="mailto:support@opusleaf.com">support@opusleaf.com</a>.</p>
-    <p>AutoChase runs on Atlassian Forge. Data stays in your Jira site.</p>
-  </section>
+    <div class="doc-part">
+      <span class="doc-part-badge doc-part-badge--cap">Capacity product</span>
+      <span class="doc-part-title">Sprint supply, backlog pressure, and availability</span>
+    </div>
+
+    <section class="doc-section" id="capacity">
+      <h2>Capacity planning</h2>
+      <p class="doc-lead">See open Jira work against each person’s capacity. Visible when <strong>Capacity planner</strong> is on under Access.</p>
+
+      <div class="doc-chips doc-chips--cap" aria-label="Capacity sub-tabs">
+        <span>Sprint commitment</span>
+        <span>Backlog pressure</span>
+        <span>Reports</span>
+        <span>Velocity</span>
+        <span>Availability</span>
+        <span>Setup</span>
+      </div>
+
+      <h3>Sprint commitment</h3>
+      <p>Plan a specific sprint: compare <strong>demand</strong> (assigned work) to <strong>supply</strong> (hours after meetings, leave, and focus factor).</p>
+      <table>
+        <tr><th>Filter</th><th>Description</th></tr>
+        <tr><td>Board</td><td>Scrum/Kanban board that owns the sprint</td></tr>
+        <tr><td>Sprint</td><td>Active or selected sprint</td></tr>
+        <tr><td>View by</td><td>Person or Project</td></tr>
+      </table>
+      <p><strong>KPIs:</strong> Demand, Supply, Utilization %, Gap, Overloaded count. A positive gap means more work than the team can deliver in that window.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Sprint commitment">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Sprint_Commitment.png</span>
+          <span class="doc-ph__hint">Sprint commitment board/sprint filters and person table</span>
+        </div>
+        <figcaption>Replace with the Sprint commitment screenshot.</figcaption>
+      </figure>
+
+      <h3>Backlog pressure</h3>
+      <p>Open workload vs <strong>weekly</strong> capacity (not sprint length). Use for ongoing backlog health.</p>
+      <table>
+        <tr><th>Metric</th><th>Meaning</th></tr>
+        <tr><td>Workload (h)</td><td>Open demand from assigned issues</td></tr>
+        <tr><td>Capacity (h/wk)</td><td>Available hours per week</td></tr>
+        <tr><td>Utilization %</td><td>Workload ÷ capacity</td></tr>
+        <tr><td>Backlog (wk)</td><td>Weeks of work at current capacity</td></tr>
+        <tr><td>Band</td><td>OK (&lt;85%), High (85–100%), Overload (&gt;100%)</td></tr>
+      </table>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Backlog pressure">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Backlog_Pressure.png</span>
+          <span class="doc-ph__hint">Backlog pressure KPIs, filters, and utilization bands</span>
+        </div>
+        <figcaption>Replace with the Backlog pressure screenshot.</figcaption>
+      </figure>
+
+      <h3>Capacity Reports</h3>
+      <p>Exports for planning meetings — separate from the main SLA <strong>Reports</strong> tab.</p>
+      <ul>
+        <li>Backlog pressure · Overload radar · Sprint commitment · Multi-sprint comparison</li>
+        <li>Output: on-screen generate, then CSV or Excel</li>
+      </ul>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Capacity reports">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Reports.png</span>
+          <span class="doc-ph__hint">Capacity Reports sub-tab with export options</span>
+        </div>
+        <figcaption>Replace with the Capacity Reports screenshot.</figcaption>
+      </figure>
+
+      <h3>Velocity</h3>
+      <p>Throughput from <strong>closed</strong> sprints on a board. Choose recent closed sprints or specific ones, chart hours or story points, optionally compare people. Click <strong>Apply</strong> after changing filters.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Velocity">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Velocity.png</span>
+          <span class="doc-ph__hint">Velocity chart and per-person summary</span>
+        </div>
+        <figcaption>Replace with the Velocity screenshot.</figcaption>
+      </figure>
+
+      <h3>Availability</h3>
+      <ul>
+        <li><strong>Leave</strong> — reduces sprint supply</li>
+        <li><strong>Recurring meetings</strong> — templates and per-person blocks</li>
+        <li><strong>Person overrides</strong> — custom weekly hours for one person</li>
+      </ul>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Availability">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Availability.png</span>
+          <span class="doc-ph__hint">Leave, meetings, and person overrides</span>
+        </div>
+        <figcaption>Replace with the Availability screenshot.</figcaption>
+      </figure>
+
+      <h3>Setup (gear)</h3>
+      <p>Team defaults for capacity math. Day-to-day leave and meetings belong in Availability. Product on/off lives under <strong>Access → Products</strong>, not here.</p>
+      <table>
+        <tr><th>Setting</th><th>Description</th></tr>
+        <tr><td>Estimate from</td><td>Remaining estimate, Original estimate, or Story points</td></tr>
+        <tr><td>Minutes if missing</td><td>Fallback when an issue has no estimate (0 = exclude)</td></tr>
+        <tr><td>Story points field / Hours per point</td><td>Convert points to hours</td></tr>
+        <tr><td>Default hours / week</td><td>Baseline capacity per person</td></tr>
+        <tr><td>Meeting hours / Focus factor</td><td>Simple meeting load and focused-work share</td></tr>
+        <tr><td>Work days / Hours per day</td><td>Calendar math for leave and sprint windows</td></tr>
+        <tr><td>Status rules</td><td>Done, handoff, and deferred statuses</td></tr>
+      </table>
+      <p>Save settings, then Refresh on the relevant capacity tab.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Capacity Setup">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Setup.png</span>
+          <span class="doc-ph__hint">Capacity Setup defaults (estimate source, hours/week, status rules)</span>
+        </div>
+        <figcaption>Replace with the Capacity Setup screenshot.</figcaption>
+      </figure>
+
+      <h3>How demand is calculated</h3>
+      <ol>
+        <li>Uses Remaining / Original / Story points per Setup</li>
+        <li>Applies per-project overrides when configured</li>
+        <li>Falls back to minutes-if-missing or points × hours/point</li>
+        <li>Status rules classify active, handoff, or deferred work</li>
+        <li>Unassigned work can appear in a separate pool</li>
+      </ol>
+      <figure class="doc-figure">
+        <!-- Existing asset option: images/Capacity_Planning.png -->
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Capacity overview">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Capacity_Planning.png</span>
+          <span class="doc-ph__hint">Overall Capacity planning view (optional overview shot)</span>
+        </div>
+        <figcaption>Replace with a Capacity planning overview screenshot.</figcaption>
+      </figure>
+    </section>
+
+    <div class="doc-part">
+      <span class="doc-part-badge doc-part-badge--shared">Shared setup</span>
+      <span class="doc-part-title">Projects, organisation, and end-to-end flow</span>
+    </div>
+
+    <section class="doc-section" id="projects">
+      <h2>Projects</h2>
+      <p class="doc-lead">Choose which Jira projects AutoChase tracks. Projects define both SLA scope and capacity scope.</p>
+      <ul>
+        <li><strong>Sync / Load projects</strong> — pull metadata from Jira</li>
+        <li><strong>Sync issues</strong> — import issues into SLA tracking (when SLA is on)</li>
+        <li><strong>Owner email</strong> (required) — escalation contact when tickets are unassigned</li>
+        <li><strong>Issue types / Default SLA / Team</strong> — optional per-project controls</li>
+      </ul>
+      <p>Add at least one project before running capacity or SLA reports.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Projects">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Projects.png</span>
+          <span class="doc-ph__hint">Projects list with default SLA and team</span>
+        </div>
+        <figcaption>Replace with the Projects screenshot.</figcaption>
+      </figure>
+    </section>
+
+    <section class="doc-section" id="organisation">
+      <h2>Organisation</h2>
+      <p class="doc-lead">Structure people and teams for analytics and escalations.</p>
+      <div class="doc-chips" aria-label="Organisation sub-tabs">
+        <span>Departments</span>
+        <span>Teams</span>
+        <span>Escalation hierarchy</span>
+      </div>
+      <h3>Departments &amp; Teams</h3>
+      <p>Create departments first, then teams under them. Assign teams to projects from the Projects tab. Used by report filters and org columns.</p>
+      <h3>Escalation hierarchy</h3>
+      <p>Shown only when the <strong>SLA</strong> product is on. Upload the manager chain for leadership visibility.</p>
+      <ol>
+        <li>Download template (<code>employee_id</code>, <code>name</code>, <code>email</code>, <code>reports_to_id</code>)</li>
+        <li>Import CSV, TSV, or Excel</li>
+        <li>Click <strong>Resolve Jira IDs</strong></li>
+        <li>Verify the table; use <strong>Add employee</strong> for edits</li>
+      </ol>
+      <p>SLA leadership visibility levels walk this chain from the assignee.</p>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for Organisation">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">Organisation_Hierarchy.png</span>
+          <span class="doc-ph__hint">Organisation — Departments / Teams / Escalation hierarchy</span>
+        </div>
+        <figcaption>Replace with the Organisation screenshot.</figcaption>
+      </figure>
+    </section>
+
+    <section class="doc-section" id="how-it-works">
+      <h2>How it works</h2>
+      <p class="doc-lead">End-to-end flow when both products are enabled. Steps that need SLA or Capacity simply skip when that product is off.</p>
+      <ol>
+        <li><strong>Tracking</strong> — New issues in enabled projects are tracked (webhook + sync)</li>
+        <li><strong>SLA assignment</strong> — Project default and matching rules; manual override per issue</li>
+        <li><strong>SLA clock</strong> — Runs in working hours if configured; pauses on selected statuses</li>
+        <li><strong>Status</strong> — on_track → at_risk → breach</li>
+        <li><strong>Reminders</strong> — Acknowledgment and progress comments at thresholds</li>
+        <li><strong>Leadership visibility</strong> — Escalation via hierarchy on scheduled checks</li>
+        <li><strong>Capacity</strong> — Open workload vs weekly/sprint supply and SLA time remaining</li>
+        <li><strong>Resolution</strong> — Tracking stops when the issue is done/resolved</li>
+      </ol>
+      <figure class="doc-figure">
+        <div class="doc-ph" role="img" aria-label="Image placeholder for How it works">
+          <span class="doc-ph__label">Image placeholder</span>
+          <span class="doc-ph__file">How_It_Works.png</span>
+          <span class="doc-ph__hint">Optional flow diagram: track → SLA → reminders → escalate → capacity</span>
+        </div>
+        <figcaption>Optional diagram — replace when ready.</figcaption>
+      </figure>
+    </section>
+
+    <section class="doc-section" id="troubleshooting">
+      <h2>Troubleshooting</h2>
+      <table>
+        <tr><th>Problem</th><th>What to try</th></tr>
+        <tr><td>Cannot open AutoChase</td><td>Ask a Jira admin to add you as a global manager on Access</td></tr>
+        <tr><td>Missing Dashboard / SLA / hierarchy</td><td>Confirm <strong>SLA, reminders and escalations</strong> is on under Access → Products</td></tr>
+        <tr><td>Missing Capacity tab</td><td>Confirm <strong>Capacity planner</strong> is on under Access → Products</td></tr>
+        <tr><td>Issue not tracked</td><td>Add project; create issue or Sync issues</td></tr>
+        <tr><td>No SLA assigned</td><td>Create matching SLA; set project default SLA</td></tr>
+        <tr><td>Escalation not working</td><td>Upload hierarchy; Resolve Jira IDs; check SLA leadership levels</td></tr>
+        <tr><td>Capacity numbers look wrong</td><td>Check estimate source, story points field, hours/point, leave, and meetings</td></tr>
+        <tr><td>Sprint commitment empty</td><td>Select the correct board and sprint; confirm issues are in that sprint</td></tr>
+        <tr><td>Issue SLA panel missing</td><td>Turn SLA product on; refresh the issue page after deploy</td></tr>
+        <tr><td>SLA seems slow/fast</td><td>Review working hours, holidays, timezone, pause statuses</td></tr>
+      </table>
+    </section>
+
+    <section class="doc-section" id="support">
+      <h2>Support</h2>
+      <p class="doc-lead">Need help with setup or behaviour on your site?</p>
+      <ul>
+        <li>Website: <a href="https://www.opusleaf.com">opusleaf.com</a></li>
+        <li>Email: <a href="mailto:support@opusleaf.com">support@opusleaf.com</a></li>
+        <li>Marketplace listing: AutoChase for Jira Cloud</li>
+      </ul>
+      <p>AutoChase runs on Atlassian Forge. Configuration and tracking data stay in your Jira Cloud site.</p>
+    </section>
+
+  </div>
 
   <footer class="doc-footer">
     AutoChase documentation — SLA tracking, escalations, and capacity planning for Jira Cloud.
   </footer>
-
 </div>
 </body>
 </html>
